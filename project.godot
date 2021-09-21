@@ -11,6 +11,7 @@ config_version=4
 [application]
 
 config/name="schoolboybattle"
+run/main_scene="res://src/levels/demo.tscn"
 config/icon="res://icon.png"
 
 [physics]
