@@ -1,0 +1,85 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/ui/HUD.gd" type="Script" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Moving" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.33484
+margin_right = 1.33484
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonUp" type="Button" parent="Moving"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -163.461
+margin_top = -194.163
+margin_right = -113.461
+margin_bottom = -144.163
+text = "haut"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonRight" type="Button" parent="Moving"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -100.724
+margin_top = -128.756
+margin_right = -50.7239
+margin_bottom = -78.7556
+text = "droite"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonDown" type="Button" parent="Moving"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -163.461
+margin_top = -68.6879
+margin_right = -113.461
+margin_bottom = -18.6879
+text = "bas"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonLeft" type="Button" parent="Moving"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -228.869
+margin_top = -130.09
+margin_right = -178.869
+margin_bottom = -80.0905
+text = "gauche"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="button_down" from="Moving/ButtonUp" to="." method="_on_ButtonUp_button_down"]
+[connection signal="button_up" from="Moving/ButtonUp" to="." method="_on_ButtonUp_button_up"]
+[connection signal="button_down" from="Moving/ButtonRight" to="." method="_on_ButtonRight_button_down"]
+[connection signal="button_up" from="Moving/ButtonRight" to="." method="_on_ButtonRight_button_up"]
+[connection signal="button_down" from="Moving/ButtonDown" to="." method="_on_ButtonDown_button_down"]
+[connection signal="button_up" from="Moving/ButtonDown" to="." method="_on_ButtonDown_button_up"]
+[connection signal="button_down" from="Moving/ButtonLeft" to="." method="_on_ButtonLeft_button_down"]
+[connection signal="button_up" from="Moving/ButtonLeft" to="." method="_on_ButtonLeft_button_up"]
