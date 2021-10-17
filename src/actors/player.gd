@@ -1,4 +1,4 @@
-extends Node2D
+extends KinematicBody2D
 
 """########################################
 				VARIABLES
@@ -10,19 +10,20 @@ enum team_e {RED=0, BLACK=1}
 
 
 var velocity = Vector2.ZERO
+var joystick_velocity = Vector2.ZERO
+
 var speed = 500
 var gender = null
 var team = null
 var flip_h = false
-var current_animation = "idle"
 
 """########################################
 				INIT
 ########################################"""
 
 func _init():
-	self.gender = gender_e.BOY
-	self.team = team_e.BLACK
+	self.gender = gender_e.GIRL
+	self.team = team_e.RED
 
 
 func init_animated_sprite():
@@ -42,18 +43,40 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	# set the velocity to zero
+	velocity = Vector2.ZERO
+	
 	run()
+	
+	# The function already uses delta in its implementation
+	var collision = move_and_slide(velocity) 
+	
+	
 	animate()
-	position += velocity * delta
+	
+
+"""########################################
+				MOVEMENT
+########################################"""
 
 
 func run():
-	var player_input_x = Input.get_action_strength("right") - Input.get_action_strength("left")
-	var player_input_y = Input.get_action_strength("down") - Input.get_action_strength("up")
-	velocity.x = player_input_x
-	velocity.y = player_input_y 
-	velocity = velocity.normalized() * speed
+	# Between -1 and 1
+	# var player_input = get_player_action_input()
+	var player_input = joystick_velocity
+	
+	velocity += player_input
+	# velocity = velocity.normalized() * speed
+	velocity *= speed
 
+
+func get_player_action_input():
+	# Controlled with WASD
+	return Vector2(
+		Input.get_action_strength("right") - Input.get_action_strength("left"),
+		Input.get_action_strength("down") - Input.get_action_strength("up")
+		)
+	
 
 """########################################
 				ANIMATIONS
@@ -61,8 +84,6 @@ func run():
 
 
 func animate():
-	current_animation = get_animation()
-	var node = str(self.gender) + '_' + str(self.team)
 	var animated_node = get_sprite_node()
 	animated_node.animation = get_animation()
 	animated_node.flip_h = flip_h
@@ -82,3 +103,12 @@ func get_animation():
 	if abs(velocity.x) > 0 || abs(velocity.y) > 0:
 		return "run"
 	return "idle"
+
+
+"""########################################
+				SLOTS
+########################################"""
+
+
+func _on_joystick_event(move_vector):
+	joystick_velocity = move_vector
