@@ -345,21 +345,21 @@ playing = true
 visible = false
 frames = SubResource( 35 )
 animation = "run"
-frame = 6
+frame = 5
 playing = true
 
 [node name="GirlRed" type="AnimatedSprite" parent="Sprites"]
 visible = false
 frames = SubResource( 52 )
 animation = "run"
-frame = 5
+frame = 4
 playing = true
 
 [node name="GirlBlack" type="AnimatedSprite" parent="Sprites"]
 visible = false
 frames = SubResource( 69 )
 animation = "run"
-frame = 9
+frame = 8
 playing = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
