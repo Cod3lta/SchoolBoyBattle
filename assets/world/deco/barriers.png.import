@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/door-horisontal-left.png-dccd65440baa671796c6543568a36e57.stex"
+path="res://.import/barriers.png-aa23f5c00bb54646ec5d4ad3efd8a1b6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/deco/door-horisontal-left.png"
-dest_files=[ "res://.import/door-horisontal-left.png-dccd65440baa671796c6543568a36e57.stex" ]
+source_file="res://assets/world/deco/barriers.png"
+dest_files=[ "res://.import/barriers.png-aa23f5c00bb54646ec5d4ad3efd8a1b6.stex" ]
 
 [params]
 
