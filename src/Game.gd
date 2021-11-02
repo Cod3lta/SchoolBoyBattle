@@ -8,8 +8,15 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$CanvasLayer/HUD/Joystick.connect("use_move_vector", $YSort/Player, "_on_joystick_event")
+	pass
 
+
+func set_main_player():
+	$CanvasLayer/HUD/Joystick.connect(
+		"use_move_vector", 
+		get_node("YSort/Players/" + str(get_tree().get_network_unique_id())), 
+		"_on_joystick_event"
+	)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

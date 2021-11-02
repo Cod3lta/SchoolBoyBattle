@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=2]
+[gd_scene load_steps=81 format=2]
 
 [ext_resource path="res://src/actors/player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player/idle/girl-red-idle.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/player/run/boy-red-run.png" type="Texture" id=7]
 [ext_resource path="res://assets/player/idle/boy-red-idle.png" type="Texture" id=8]
 [ext_resource path="res://assets/player/idle/girl-black-idle.png" type="Texture" id=9]
+[ext_resource path="res://assets/fonts/Roboto/Roboto-Bold.ttf" type="DynamicFontData" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6, 0.5 )
@@ -321,6 +322,13 @@ animations = [ {
 "speed": 15.0
 } ]
 
+[sub_resource type="DynamicFont" id=70]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 10 )
+
 [node name="Player" type="KinematicBody2D"]
 scale = Vector2( 10, 10 )
 collision_layer = 3
@@ -329,7 +337,6 @@ script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 4.49091 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 1 )
 
 [node name="Sprites" type="Node2D" parent="."]
@@ -338,33 +345,49 @@ position = Vector2( 0, -3.00909 )
 [node name="BoyRed" type="AnimatedSprite" parent="Sprites"]
 frames = SubResource( 18 )
 animation = "idle"
-frame = 5
+frame = 1
 playing = true
 
 [node name="BoyBlack" type="AnimatedSprite" parent="Sprites"]
 visible = false
 frames = SubResource( 35 )
 animation = "run"
-frame = 5
+frame = 6
 playing = true
 
 [node name="GirlRed" type="AnimatedSprite" parent="Sprites"]
 visible = false
 frames = SubResource( 52 )
 animation = "run"
-frame = 4
+frame = 5
 playing = true
 
 [node name="GirlBlack" type="AnimatedSprite" parent="Sprites"]
 visible = false
 frames = SubResource( 69 )
 animation = "run"
-frame = 8
+frame = 9
 playing = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="."]
 position = Vector2( 0, -3.00909 )
-current = true
 smoothing_enabled = true
 smoothing_speed = 10.0
 editor_draw_screen = false
+
+[node name="NameTag" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -4.65121
+margin_top = -13.7379
+margin_right = 88.3488
+margin_bottom = 5.26215
+rect_scale = Vector2( 0.1, 0.1 )
+custom_fonts/font = SubResource( 70 )
+text = "Player Name"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

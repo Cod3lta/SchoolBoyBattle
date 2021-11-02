@@ -11,8 +11,12 @@ config_version=4
 [application]
 
 config/name="schoolboybattle"
-run/main_scene="res://src/ui/Game.tscn"
+run/main_scene="res://src/ui/menus/local-connection/ConnectionTest.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+gamestate="*res://src/scripts/gamestate.gd"
 
 [input]
 
