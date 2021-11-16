@@ -24,8 +24,13 @@ func server_spawn():
 # Canned on every client
 remote func spawn_candy():
 	var candy: Node2D = self.candy_scene.instance()
-	candy.position = self.position
 	candy.set_network_master(1)
+	#if get_tree().is_network_server():
+	#	candy.position = self.position
+	#else:
+	candy.targeted_position = self.position
+	candy.position = self.position
+	
 	
 	if get_tree().is_network_server():
 		candy.spawner = self

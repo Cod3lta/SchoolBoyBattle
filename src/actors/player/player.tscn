@@ -27,7 +27,7 @@ shape = SubResource( 1 )
 position = Vector2( 0, -3.00909 )
 frames = ExtResource( 2 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="Camera" type="Camera2D" parent="."]

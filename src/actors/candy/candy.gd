@@ -5,7 +5,6 @@ extends Node2D
 ########################################"""
 
 
-var next_candy: Node2D = null
 var taken_by: KinematicBody2D = null
 var spawner: Node = null
 
@@ -22,21 +21,27 @@ puppet var puppet_targeted_pos = Vector2.ZERO
 func _init():
 	pass
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	targeted_position = position
+	self.puppet_targeted_pos = self.targeted_position
+
+
+"""########################################
+				PROCESS
+########################################"""
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if taken_by != null:
-		if is_network_master():
+	if is_network_master():
+		if taken_by != null:
 			assert(get_tree().is_network_server())
-			# self.position = taken_by.position
 			rset("puppet_targeted_pos", targeted_position)
-		else:
-			targeted_position  = puppet_targeted_pos
+	else:
+		self.targeted_position  = self.puppet_targeted_pos
 		
-		self.position = lerp(self.position, self.targeted_position, 0.1)
+	self.position = lerp(self.position, self.targeted_position, 0.1)
 
 
 # Picked up from the ground by a player
@@ -44,8 +49,8 @@ func _on_Area2D_body_entered(player):
 	if not player is KinematicBody2D:
 		return
 	
-	print($Area2D.get_collision_mask())
-	self.taken_by = player
+	assert(get_tree().is_network_server())
+	
 	self.set_collision_player(false) # Doesn't detect every player
 	player.take_candy(self)
 

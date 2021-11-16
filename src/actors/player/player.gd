@@ -37,6 +37,10 @@ func init(name: String, gender: bool, team: bool, position: Vector2):
 	self.gender = gender
 	self.team = team
 	self.position = position
+	if team:
+		self.set_collision_layer_bit(4, true)
+	else:
+		self.set_collision_layer_bit(3, true)
 
 
 # Called when the node enters the scene tree for the first time
@@ -143,9 +147,39 @@ func multiplayer_movements():
 
 func take_candy(candy: Node2D):
 	assert(candy is Node2D)
-	self.trail.insert(0, candy)
-	candy.set_collision_team(bool(self.team))
-	candy.set_color_team(bool(self.team))
+	
+	var candies_to_append = Array()
+	
+	if candy.taken_by != null:
+		# Picked up from the ground
+		candies_to_append = self.steal_candies(candy)
+	else:
+		# Steal the candies from another player
+		candies_to_append.append(candy)
+	
+	candies_to_append.invert()
+	
+	for c in candies_to_append:
+		self.trail.insert(0, c)
+		c.taken_by = self
+		c.set_collision_team(not bool(self.team))
+		c.set_color_team(bool(self.team))
+
+
+func steal_candies(candy: Node2D) -> Array:
+	if not get_tree().is_network_server():
+		return Array()
+	return candy.taken_by.loose_candies(candy)
+
+
+func loose_candies(from: Node2D) -> Array:
+	var i_start: int = trail.find(from)
+	if i_start == -1: return Array()
+	
+	var stolen_candies = self.trail.slice(i_start, self.trail.size())
+	self.trail.resize(i_start)
+	
+	return stolen_candies
 
 
 """########################################

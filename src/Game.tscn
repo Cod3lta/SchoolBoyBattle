@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://src/actors/candy/candy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/ui/game-hud.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/levels/level-demo.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/Game.gd" type="Script" id=4]
@@ -17,9 +16,6 @@ script = ExtResource( 4 )
 [node name="Players" type="YSort" parent="YSort"]
 
 [node name="Candies" type="YSort" parent="YSort"]
-
-[node name="Candy" parent="YSort/Candies" instance=ExtResource( 1 )]
-position = Vector2( 1056.73, -671.071 )
 
 [node name="Map" parent="YSort" instance=ExtResource( 3 )]
 position = Vector2( 6.10352e-05, 0.00012207 )
