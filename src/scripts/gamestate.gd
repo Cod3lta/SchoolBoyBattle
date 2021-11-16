@@ -18,10 +18,11 @@ const MAX_PEERS = 8
 
 # Name for my player.
 var player_name = "no player name yet"
+var server_only: bool = true
 
-# Names for remote players in id:name format.
-var other_players = {}
-var players_ready = []
+# Names for remote players in id -> name format.
+var players = {}
+var id_players_ready = []
 
 # Signals to let lobby GUI know what's going on.
 signal player_list_changed()
@@ -58,14 +59,15 @@ func _player_connected(id):
 	# When a player connects to the server we are already connected on, this slot is activated
 	# We have to tell the newly connected player that we are here.
 	# -> This signal is also emitted server-side when a new clients made a connection
-	rpc_id(id, "register_player", player_name)
+	if not server_only:
+		rpc_id(id, "register_player", player_name)
 
 
 # Callback from SceneTree.
 func _player_disconnected(id):
 	if has_node("/root/World"): # Game is in progress.
 		if get_tree().is_network_server():
-			emit_signal("game_error", "Player " + other_players[id] + " disconnected")
+			emit_signal("game_error", "Player " + players[id] + " disconnected")
 			end_game()
 	else: # Game is not in progress.
 		# Unregister this player.
@@ -74,13 +76,15 @@ func _player_disconnected(id):
 
 remote func register_player(new_player_name):
 	var id = get_tree().get_rpc_sender_id()
-	other_players[id] = new_player_name
+	if id == 0:
+		id = get_tree().get_network_unique_id()
+	players[id] = new_player_name
 	print("A new player is connected : " + str(id))
 	emit_signal("player_list_changed")
 
 
 func unregister_player(id):
-	other_players.erase(id)
+	players.erase(id)
 	emit_signal("player_list_changed")
 
 
@@ -96,34 +100,14 @@ remote func pre_start_game(players_init):
 	get_tree().get_root().add_child(game)
 	# Hide the LocalConnection node (not remove it)
 	get_tree().get_root().get_node("LocalConnection").hide()
+	# Init the Game node
+	game.init(players_init, self.server_only)
 	
-	var player_scene = load("res://src/actors/player.tscn")
-	
-	# Create the players
-	var i = 0
-	for id in players_init:
-		var p_init = players_init[id]
-		var spawn_pos = game.get_node("SpawnPoints/" + str(i)).position
-		var p = player_scene.instance()
-		
-		p.init(p_init["name"], p_init["gender"], p_init["team"], spawn_pos)
-		p.set_name(str(id)) # Use unique ID as node name
-		p.set_network_master(id) #set unique id as master
-		
-		# If the player we are creating is the one of this instance
-		if get_tree().get_network_unique_id() == id:
-			# Set it's camera as the main one
-			p.get_node("Camera").current = true
-
-		game.get_node("YSort/Players").add_child(p)		
-		i += 1
-
+	# Tell server we are ready to start
 	if not get_tree().is_network_server():
-		# Tell server we are ready to start
 		rpc_id(1, "ready_to_start")
-	elif other_players.size() == 0:
-		# If we're the server and no one else is connected
-		post_start_game()
+	else:
+		ready_to_start()
 
 
 remote func post_start_game():
@@ -138,7 +122,7 @@ func end_game():
 		get_node("/root/World").queue_free()
 
 	emit_signal("game_ended")
-	other_players.clear()
+	players.clear()
 
 
 """#####################
@@ -146,13 +130,15 @@ Getters and setters
 #####################"""
 
 
-func get_player_list():
-	return other_players.values()
+func get_players_list():
+	return self.players
 
 
 func get_player_name():
-	return player_name
+	return self.player_name
 
+func get_server_only():
+	return self.server_only
 
 """#################################################
 				THIS INSTANCE AS A CLIENT
@@ -160,15 +146,19 @@ func get_player_name():
 	
 
 func join_game(ip, new_player_name):
-	player_name = new_player_name
+	self.server_only = false
+	
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(peer)
+	
+	self.player_name = new_player_name
+	self.register_player(self.player_name)
 
 
 # Callback from SceneTree, only for clients (not server).
 func _connected_ok():
-	# We just connected to a server§
+	# We've just connected to a server
 	emit_signal("connection_succeeded")
 	print("We are connected!")
 	print(get_tree().get_network_connected_peers())
@@ -192,8 +182,16 @@ func _connected_fail():
 
 
 # This instance clicked the "host" button
-func host_game(new_player_name):
-	player_name = new_player_name
+func host_and_play_game(new_player_name):
+	self.server_only = false
+	self.host_game()
+	
+	self.player_name = new_player_name
+	self.register_player(self.player_name)
+
+
+# This instance clicked the "host only" button
+func host_game():
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(peer)
@@ -204,12 +202,12 @@ remote func ready_to_start():
 	assert(get_tree().is_network_server())
 
 	var id = get_tree().get_rpc_sender_id()
-	if not id in players_ready:
-		players_ready.append(id)
+	if not id in id_players_ready:
+		id_players_ready.append(id)
 	# Wait for every player to be ready
-	if players_ready.size() == other_players.size():
+	if id_players_ready.size() == players.size():
 		# If everyone is ready
-		for p in other_players:
+		for p in players:
 			rpc_id(p, "post_start_game")
 		post_start_game()
 
@@ -222,8 +220,8 @@ func begin_game():
 	var team_toggler = randf() > 0.5
 	
 	# setup teams and player genders
-	var all_players = other_players.duplicate(false)
-	all_players[1] = player_name
+	var all_players = players.duplicate(false)
+	# all_players[1] = player_name
 	var players_init = {}
 	
 	for id in all_players:

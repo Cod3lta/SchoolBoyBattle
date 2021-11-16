@@ -14,6 +14,8 @@ puppet var puppet_velocity = Vector2.ZERO
 var velocity = Vector2.ZERO
 var joystick_velocity = Vector2.ZERO
 
+var trail: Array = Array()
+
 var speed = 500
 var gender = null
 var team = null
@@ -23,26 +25,24 @@ var flip_h = false
 				INIT
 ########################################"""
 
+
+# Default values
 func _init():
 	self.gender = gender_e.GIRL
 	self.team = team_e.RED
 
+# Used as a constructor
 func init(name: String, gender: bool, team: bool, position: Vector2):
 	$NameTag.set_text(name)
 	self.gender = gender
 	self.team = team
 	self.position = position
 
-func init_animated_sprite():
-	for sprite in $Sprites.get_children():
-		var sprite_as = sprite as AnimatedSprite
-		sprite_as.hide()
-	get_sprite_node().show()
-
 
 # Called when the node enters the scene tree for the first time
 func _ready():
-	init_animated_sprite()
+	self.init_sprite_frame()
+
 
 """########################################
 				PROCESS
@@ -68,6 +68,8 @@ func _process(delta):
 func apply_movements():
 	# The function already uses delta in its implementation
 	move_and_slide(velocity)
+	if not is_network_master():
+		puppet_pos = position # To avoid jitter
 
 
 func run():
@@ -95,23 +97,27 @@ func get_player_action_input():
 
 
 func animate():
-	var node_to_animate = get_sprite_node()
-	node_to_animate.animation = get_animation()
-	node_to_animate.flip_h = flip_h
-	if abs(velocity.x) > 0:
-		flip_h = velocity.x < 0
+	$AnimatedSprite.animation = get_animation()
+	$AnimatedSprite.flip_h = self.flip_h
+	if abs(self.velocity.x) > 0:
+		self.flip_h = self.velocity.x < 0
 
 
-func get_sprite_node():
-	if int(gender) == gender_e.BOY  and int(team) == team_e.RED:   return $Sprites/BoyRed
-	if int(gender) == gender_e.BOY  and int(team) == team_e.BLACK: return $Sprites/BoyBlack
-	if int(gender) == gender_e.GIRL and int(team) == team_e.RED:   return $Sprites/GirlRed
-	if int(gender) == gender_e.GIRL and int(team) == team_e.BLACK: return $Sprites/GirlBlack
-	print("No animation defined")
-	assert(false)
+func init_sprite_frame():
+	var sprite_frames: SpriteFrames
+	if int(self.gender) == self.gender_e.BOY  and int(self.team) == self.team_e.RED:
+		sprite_frames = preload("res://src/actors/player/spriteFrames/boyRed.tres")
+	if int(self.gender) == self.gender_e.BOY  and int(self.team) == self.team_e.BLACK:
+		sprite_frames = preload("res://src/actors/player/spriteFrames/boyBlack.tres")
+	if int(self.gender) == self.gender_e.GIRL and int(self.team) == self.team_e.RED:
+		sprite_frames = preload("res://src/actors/player/spriteFrames/girlRed.tres")
+	if int(self.gender) == self.gender_e.GIRL and int(self.team) == self.team_e.BLACK:
+		sprite_frames = preload("res://src/actors/player/spriteFrames/girlBlack.tres")
+	$AnimatedSprite.set_sprite_frames(sprite_frames)
+
 
 func get_animation():
-	if abs(velocity.x) > 0 || abs(velocity.y) > 0:
+	if abs(self.velocity.x) > 0 || abs(self.velocity.y) > 0:
 		return "run"
 	return "idle"
 
@@ -128,6 +134,19 @@ func multiplayer_movements():
 	else:
 		position = puppet_pos
 		velocity = puppet_velocity
+
+
+"""########################################
+				CANDIES
+########################################"""
+
+
+func take_candy(candy: Node2D):
+	assert(candy is Node2D)
+	self.trail.insert(0, candy)
+	candy.set_collision_team(bool(self.team))
+	candy.set_color_team(bool(self.team))
+
 
 """########################################
 				SLOTS

@@ -1,14 +1,16 @@
 extends Control
 
 
-onready var players_list = $WaitingRoom/MarginContainer/VBoxContainer/PlayersList
-onready var start_button = $WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer/ButtonStart
-onready var host_button = $Connection/VBoxContainer/GridContainer/ButtonHost
-onready var join_button = $Connection/VBoxContainer/GridContainer/ButtonJoin
-onready var username = $Connection/VBoxContainer/GridContainer/LineEditPseudo
-onready var ip_address = $Connection/VBoxContainer/GridContainer/LineEditAddress
-onready var error = $Connection/VBoxContainer/LabelError
-onready var back_button = $WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer/ButtonBack
+onready var players_list = 		$WaitingRoom/MarginContainer/VBoxContainer/PlayersList
+onready var show_ip_address = 	$WaitingRoom/MarginContainer/VBoxContainer/IPAddress
+onready var start_button = 		$WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer/ButtonStart
+onready var back_button = 		$WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer/ButtonBack
+
+onready var join_button = 		$Connection/VBoxContainer/GridContainer/ButtonJoin
+onready var host_button = 		$Connection/VBoxContainer/GridContainer/ButtonHost
+onready var username = 			$Connection/VBoxContainer/GridContainer/LineEditPseudo
+onready var ip_address = 		$Connection/VBoxContainer/GridContainer/LineEditAddress
+onready var error = 			$Connection/VBoxContainer/LabelError
 
 const MIN_PLAYERS = 1
 
@@ -21,6 +23,10 @@ func _ready():
 	
 	$Connection.show()
 	$WaitingRoom.hide()
+	
+	# Show the IP address on the GUI
+	show_ip_address.text = "Adresse IP : " + str(IP.get_local_addresses()[0])
+	
 	# Set the username
 	if OS.has_environment("USERNAME"):
 		username.text = OS.get_environment("USERNAME")
@@ -31,7 +37,14 @@ func _ready():
 func _on_ButtonHost_pressed():
 	$WaitingRoom.show()
 	$Connection.hide()
-	gamestate.host_game(username.text)
+	gamestate.host_and_play_game(username.text)
+	refresh_waiting_room()
+
+
+func _on_ButtonHostOnly_pressed():
+	$WaitingRoom.show()
+	$Connection.hide()
+	gamestate.host_game()
 	refresh_waiting_room()
 
 
@@ -82,12 +95,13 @@ func _on_game_error(errtxt):
 
 
 func refresh_waiting_room():
-	var players = gamestate.get_player_list()
-	players.sort()
+	var players = gamestate.get_players_list()
 	players_list.clear()
-	players_list.add_item(gamestate.get_player_name() + " (You)")
-	for p in players:
-		players_list.add_item(p)
+	for id in players:
+		var p = players[id]
+		if id == get_tree().get_network_unique_id():
+			p += " (You)"
+		players_list.add_item(p + " (" + str(id) + ")")
 
 	if get_tree().is_network_server():
 		if players.size() < MIN_PLAYERS - 1:
