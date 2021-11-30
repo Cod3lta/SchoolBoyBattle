@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+class_name Player
+
 """########################################
 				VARIABLES
 ########################################"""
@@ -16,6 +18,7 @@ var joystick_velocity = Vector2.ZERO
 
 var trail: Array = Array()
 
+var player_name = ""
 var speed = 500
 var gender = null
 var team = null
@@ -32,11 +35,12 @@ func _init():
 	self.team = team_e.RED
 
 # Used as a constructor
-func init(name: String, gender: bool, team: bool, position: Vector2):
+func init(name: String, gender: bool, team: int, position: Vector2):
 	$NameTag.set_text(name)
 	self.gender = gender
 	self.team = team
 	self.position = position
+	self.player_name = name
 	if team:
 		self.set_collision_layer_bit(4, true)
 	else:
@@ -133,8 +137,8 @@ func get_animation():
 
 func multiplayer_movements():
 	if is_network_master():
-		rset("puppet_velocity", velocity)
-		rset("puppet_pos", position)
+		rset_unreliable("puppet_velocity", velocity)
+		rset_unreliable("puppet_pos", position)
 	else:
 		position = puppet_pos
 		velocity = puppet_velocity
@@ -180,6 +184,16 @@ func loose_candies(from: Node2D) -> Array:
 	self.trail.resize(i_start)
 	
 	return stolen_candies
+
+
+func arrive_at_home():
+	print("I'm at home")
+
+func points_in_queue() -> int:
+	var points: int = 0
+	for c in self.trail:
+		points += c.points
+	return points
 
 
 """########################################

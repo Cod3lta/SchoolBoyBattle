@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/actors/candy/candy.gd" type="Script" id=1]
-[ext_resource path="res://src/actors/candy/spriteFrames/mandarinSmall.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://src/actors/candy/types/mandarinSmall.tres" type="SpriteFrames" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 56.0357
@@ -13,10 +13,11 @@ script = ExtResource( 1 )
 scale = Vector2( 10, 10 )
 frames = ExtResource( 2 )
 animation = "idle"
-frame = 5
+frame = 4
 playing = true
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 2
 collision_mask = 0
 

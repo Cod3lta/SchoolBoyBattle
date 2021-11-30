@@ -25,5 +25,6 @@ func _on_Timer_timeout():
 	if available_spawners.size() == 0:
 		return
 	
+	# Choose a random spawner
 	var spawner:Position2D = available_spawners[randi() % available_spawners.size()]
 	spawner.server_spawn()

@@ -20,14 +20,14 @@ collision_mask = 4
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 4.49091 )
+position = Vector2( 0, 3.49033 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -3.00909 )
 frames = ExtResource( 2 )
 animation = "idle"
-frame = 1
+frame = 3
 playing = true
 
 [node name="Camera" type="Camera2D" parent="."]
@@ -42,9 +42,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -13.9851
-margin_top = -15.9362
+margin_top = -18.0719
 margin_right = 79.0149
-margin_bottom = 3.06382
+margin_bottom = 0.92807
 rect_scale = Vector2( 0.3, 0.3 )
 custom_fonts/font = SubResource( 2 )
 text = "Player Name"
@@ -52,7 +52,3 @@ align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CandiesTrail" type="Node2D" parent="."]
-position = Vector2( 15.3043, 0 )
-scale = Vector2( 0.1, 0.1 )

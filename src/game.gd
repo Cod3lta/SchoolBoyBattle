@@ -1,13 +1,21 @@
 extends Node2D
 
+class_name Game
 
 """########################################
 				VARIABLES
 ########################################"""
 
 
-var player: KinematicBody2D
+var player: Player
 var is_server: bool
+
+var points = {
+	'red': 0,
+	'black': 0
+}
+
+signal update_progressbar
 
 
 """########################################
@@ -15,10 +23,20 @@ var is_server: bool
 ########################################"""
 
 
-func init(players_init, server_only = false):
-	var player_scene = load("res://src/actors/player/player.tscn")
+func init(players_init: Dictionary):
+	init_client(players_init)
 	
-	# Create the players
+	if get_tree().is_network_server():
+		self.init_server()
+	
+	if gamestate.get_server_only():
+		$CameraServerOnly.visible = true
+		$CameraServerOnly.current = true
+		$CanvasLayer/HUD.visible = false
+
+
+func init_client(players_init: Dictionary):
+	var player_scene = load("res://src/actors/player/player.tscn")
 	var i_black = 0
 	var i_red = 0
 	
@@ -46,23 +64,21 @@ func init(players_init, server_only = false):
 
 		get_node("YSort/Players").add_child(p)
 	
-	if get_tree().is_network_server():
-		
-		# Candy spawners
-		var candy_spawner = load("res://src/scripts/server/candySpawners/CandySpawners.tscn").instance()
-		self.add_child(candy_spawner)
-		candy_spawner.init($YSort/Map/CandySpawners.get_children())
-		
-		# Candy trails
-		var candy_trails = load("res://src/scripts/server/trails/Trails.tscn").instance()
-		self.add_child(candy_trails)
-		candy_trails.init($YSort/Players)
-	
-	if server_only:
-		$CameraServerOnly.visible = true
-		$CameraServerOnly.current = true
-		$CanvasLayer/HUD.visible = false
+	self.connect("update_progressbar", $CanvasLayer/HUD/ProgressBar, "update_progressbar")
 
+
+func init_server():
+	# Candy spawners
+	var candy_spawner = load("res://src/scripts/server/candySpawners/CandySpawners.tscn").instance()
+	self.add_child(candy_spawner)
+	candy_spawner.init($YSort/Map/CandySpawners.get_children())
+	
+	# Candy trails
+	var trails = load("res://src/scripts/server/trails/Trails.tscn").instance()
+	self.add_child(trails)
+	trails.init($YSort/Players)
+	$YSort/Map.connect("player_arrived_at_home", self, "add_points")
+	$YSort/Map.connect("player_arrived_at_home", trails, "clear_trail")
 
 func set_main_player():
 	# Connects the joystick's signal to the player of this instance
@@ -89,10 +105,6 @@ func _process(delta):
 	
 	if get_tree().is_network_server():
 		pass # self.draw_player_trail()
-	
-	# Shrunk the trail if it's too big FIXME : doesn't work ?
-	#if points_size > 5:
-	#	$ThisPlayerTrail.points.resize(1)
 
 
 remote func spawn_candy(pos, type):
@@ -102,3 +114,23 @@ remote func spawn_candy(pos, type):
 """########################################
 				SLOTS
 ########################################"""
+
+# Only called on the server
+func add_points(player: Player):
+	assert(get_tree().is_network_server())
+	
+	var team: bool = player.team
+	var points: int = player.points_in_queue()
+	
+	print(player.team)
+	match (player.team):
+		player.team_e.RED: self.points['red'] += points
+		player.team_e.BLACK: self.points['black'] += points
+	
+	for id in gamestate.get_clients_list():
+		rpc_id(id, "update_progressbar_client", self.points)
+	
+	emit_signal("update_progressbar", self.points)
+
+remote func update_progressbar_client(points: Dictionary):
+	emit_signal("update_progressbar", points)

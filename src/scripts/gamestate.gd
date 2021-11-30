@@ -93,15 +93,15 @@ Start / stop game
 #####################"""
 
 
-remote func pre_start_game(players_init):
+remote func pre_start_game(players_init: Dictionary):
 	print(players_init)
 
-	var game = load("res://src/Game.tscn").instance()
+	var game = preload("res://src/game.tscn").instance()
 	get_tree().get_root().add_child(game)
 	# Hide the LocalConnection node (not remove it)
 	get_tree().get_root().get_node("LocalConnection").hide()
 	# Init the Game node
-	game.init(players_init, self.server_only)
+	game.init(players_init)
 	
 	# Tell server we are ready to start
 	if not get_tree().is_network_server():
@@ -133,6 +133,13 @@ Getters and setters
 func get_players_list():
 	return self.players
 
+# Returns the player list except the server (id = 1) if it's present
+func get_clients_list():
+	if self.server_only:
+		return self.get_players_list()
+	var clients = self.players.duplicate()
+	clients.erase(1)
+	return clients
 
 func get_player_name():
 	return self.player_name
@@ -207,8 +214,8 @@ remote func ready_to_start():
 	# Wait for every player to be ready
 	if id_players_ready.size() == players.size():
 		# If everyone is ready
-		for p in players:
-			rpc_id(p, "post_start_game")
+		for player_id in self.get_clients_list():
+			rpc_id(player_id, "post_start_game")
 		post_start_game()
 
 
@@ -222,19 +229,19 @@ func begin_game():
 	# setup teams and player genders
 	var all_players = players.duplicate(false)
 	# all_players[1] = player_name
-	var players_init = {}
+	var players_init: Dictionary = {}
 	
 	for id in all_players:
 		players_init[id] = {
 			"name": all_players[id],
 			"gender": randf() > 0.5,
-			"team": team_toggler
+			"team": int(team_toggler)
 		}
 		team_toggler = not team_toggler
 
 	# tell everyone to get ready
-	for p in all_players:
-		rpc_id(p, "pre_start_game", players_init)
+	for id in self.get_clients_list():
+		rpc_id(id, "pre_start_game", players_init)
 
 	pre_start_game(players_init)
 

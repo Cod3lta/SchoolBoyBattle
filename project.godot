@@ -8,6 +8,58 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Candy",
+"language": "GDScript",
+"path": "res://src/actors/candy/candy.gd"
+}, {
+"base": "Node2D",
+"class": "Game",
+"language": "GDScript",
+"path": "res://src/game.gd"
+}, {
+"base": "Candy",
+"class": "MandarinLarge",
+"language": "GDScript",
+"path": "res://src/actors/candy/types/mandarinLarge.gd"
+}, {
+"base": "Candy",
+"class": "MandarinSmall",
+"language": "GDScript",
+"path": "res://src/actors/candy/types/mandarinSmall.gd"
+}, {
+"base": "Candy",
+"class": "PeanutLarge",
+"language": "GDScript",
+"path": "res://src/actors/candy/types/peanutLarge.gd"
+}, {
+"base": "Candy",
+"class": "PeanutSmall",
+"language": "GDScript",
+"path": "res://src/actors/candy/types/peanutSmall.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://src/actors/player/player.gd"
+}, {
+"base": "Position2D",
+"class": "Spawner",
+"language": "GDScript",
+"path": "res://src/scripts/server/candySpawners/spawner.gd"
+} ]
+_global_script_class_icons={
+"Candy": "res://assets/candy/candy-icon.svg",
+"Game": "",
+"MandarinLarge": "res://assets/candy/mandarin-big.png",
+"MandarinSmall": "res://assets/candy/mandarin-small.png",
+"PeanutLarge": "res://assets/candy/peanut-big.png",
+"PeanutSmall": "res://assets/candy/peanut-small.png",
+"Player": "",
+"Spawner": ""
+}
+
 [application]
 
 config/name="schoolboybattle"
