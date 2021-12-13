@@ -1,6 +1,6 @@
-extends Node2D
+extends Area2D
 
-class_name Candy, "res://assets/candy/candy-icon.svg"
+class_name Candy
 
 """########################################
 				VARIABLES
@@ -25,10 +25,18 @@ var sprite_frame: SpriteFrames = null
 func _init():
 	pass
 
+func init(pos: Vector2, type: String):
+	# FIXME : the game crashed if I remove the "self." in these lines??
+	self.set_script(Database.candies[type].file)
+	self.targeted_position = pos
+	self.position = pos
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.puppet_targeted_pos = self.targeted_position 
+	self.set_network_master(1)
+	set_process(false)
+	print("network master of candy : " + str(get_network_master()))
 
 func set_candy_sprite_frame(sprite_frame: SpriteFrames):
 	$AnimatedSprite.set_sprite_frames(self.sprite_frame)
@@ -44,25 +52,34 @@ func _process(delta):
 	if is_network_master():
 		if taken_by != null:
 			assert(get_tree().is_network_server())
-			rset("puppet_targeted_pos", targeted_position)
+			rset_unreliable("puppet_targeted_pos", targeted_position)
 	else:
 		self.targeted_position  = self.puppet_targeted_pos
-		
 	self.position = lerp(self.position, self.targeted_position, 0.1)
 
 
-# Picked up / stolen by a player
-func _on_Area2D_body_entered(player):
-	if not player is KinematicBody2D: return
-		
+remote func client_take():
+	self.set_process(true)
+
+
+func take(player: KinematicBody2D):
 	assert(get_tree().is_network_server())
 	
-	if $Area2D.get_collision_mask_bit(0):
-		# Picked up from the ground
-		self.set_collision_player(false) # Doesn't detect every player anymore
-		self.spawner.candy_taken() # Free the spawner for
+	self.taken_by = player
+	self.set_process(true)
 	
-	player.take_candy(self)
+	if get_collision_layer_bit(1):
+		# picked up from the ground
+		# Change the collision layer bits
+		set_collision_layer_bit(1, false) # remove the candy layer
+		self.spawner.candy_taken()
+	
+	if player.team:
+		# Player is team black
+		set_collision_layer_bit(4, true) # add the candy black layer
+	else:
+		# Player is team red
+		set_collision_layer_bit(3, true) # add the candy red layer
 
 
 """########################################
@@ -74,24 +91,26 @@ func is_taken():
 	return self.taken_by != null
 
 
-func set_collision_player(value: bool):
-	$Area2D.set_collision_mask_bit(0, value)
+#func set_collision_player(value: bool):
+#	$Area2D.set_collision_mask_bit(0, value)
+
+
+remote func set_color_team(is_black: bool):
+	if is_black:
+		self.modulate = Color("6d6d6d")
+	else:
+		self.modulate = Color("ae3838")
 
 
 # false -> red   /   true -> black
-func set_color_team(is_black: bool):
-	# Set the candy visual color
-	pass
 
-
-# false -> red   /   true -> black
 func set_collision_team(is_black: bool):
-	$Area2D.set_collision_mask_bit(3, not is_black)
-	$Area2D.set_collision_mask_bit(4, is_black)
+	$Area2D.set_collision_layer_bit(3, not is_black)
+	$Area2D.set_collision_layer_bit(4, is_black)
 
 func delete():
 	assert(is_network_master())
-	for id in gamestate.get_clients_list():
+	for id in Gamestate.get_clients_list():
 		rpc_id(id, "delete_candy_client", self.get_name())
 	delete_candy_client(self.get_name())
 	

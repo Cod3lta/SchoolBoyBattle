@@ -1,0 +1,150 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/themes/main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://src/ui/components/progressBar/progressBar.gd" type="Script" id=2]
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0, 0.654762, 1 )
+colors = PoolColorArray( 0.682353, 0.219608, 0.219608, 1, 0.509804, 0.184314, 0.184314, 1, 0.576471, 0.160784, 0.160784, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 5 )
+
+[sub_resource type="Curve" id=8]
+_data = [ Vector2( 0, 1 ), 0.0, -0.028465, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=9]
+curve = SubResource( 8 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+lifetime_randomness = 1.0
+emission_shape = 2
+emission_box_extents = Vector3( 1, 10, 1 )
+flag_disable_z = true
+spread = 10.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 26.02
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 720.0
+angle_random = 1.0
+scale = 6.87
+scale_curve = SubResource( 9 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxLine" id=10]
+color = Color( 0.8, 0.8, 0.8, 1 )
+thickness = 4
+vertical = true
+
+[node name="ProgressBar" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1280.0
+margin_bottom = -720.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -280.0
+margin_top = -24.0
+margin_right = 280.0
+margin_bottom = 24.0
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelRed" type="Label" parent="HBoxContainer"]
+margin_right = 70.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 70, 0 )
+theme = ExtResource( 1 )
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer"]
+margin_left = 80.0
+margin_top = 9.0
+margin_right = 480.0
+margin_bottom = 39.0
+rect_min_size = Vector2( 400, 30 )
+size_flags_vertical = 4
+max_value = 1.0
+value = 0.5
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Particles2D" type="Particles2D" parent="HBoxContainer/ProgressBar"]
+position = Vector2( 200, 14.9831 )
+amount = 176
+visibility_rect = Rect2( -15, -15, 50, 30 )
+process_material = SubResource( 6 )
+
+[node name="LabelBlack" type="Label" parent="HBoxContainer"]
+margin_left = 490.0
+margin_right = 560.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 70, 0 )
+theme = ExtResource( 1 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar2" type="ProgressBar" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -15.0
+margin_right = 200.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 400, 30 )
+size_flags_vertical = 4
+custom_styles/bg = SubResource( 7 )
+max_value = 1.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -3.0
+margin_top = -4.0
+margin_right = 3.0
+margin_bottom = 4.0
+custom_styles/separator = SubResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="value_changed" from="HBoxContainer/ProgressBar" to="." method="_on_ProgressBar_value_changed"]

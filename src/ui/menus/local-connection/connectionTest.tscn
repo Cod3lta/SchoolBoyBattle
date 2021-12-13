@@ -1,0 +1,294 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://src/ui/menus/local-connection/connectionTest.gd" type="Script" id=1]
+[ext_resource path="res://assets/themes/main_theme.tres" type="Theme" id=2]
+[ext_resource path="res://assets/world/base/planks.png" type="Texture" id=3]
+[ext_resource path="res://assets/world/base/snow.png" type="Texture" id=4]
+[ext_resource path="res://assets/themes/CarterOneWhite.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/themes/button_styleboxflat.tres" type="StyleBox" id=6]
+[ext_resource path="res://assets/themes/CarterOne-Regular.ttf" type="DynamicFontData" id=7]
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.682353, 0.219608, 0.219608, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color( 0, 0, 0, 0 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.478431, 0.152941, 0.152941, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color( 0, 0, 0, 0 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 60
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color( 0.14902, 0.121569, 0.121569, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxTexture" id=3]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 13, 13 )
+modulate_color = Color( 0.827451, 0.827451, 0.827451, 1 )
+
+[sub_resource type="Theme" id=7]
+Button/fonts/font = ExtResource( 5 )
+Button/styles/focus = SubResource( 4 )
+Button/styles/hover = SubResource( 2 )
+Button/styles/normal = ExtResource( 6 )
+Label/fonts/font = SubResource( 6 )
+LineEdit/fonts/font = ExtResource( 5 )
+LineEdit/styles/normal = SubResource( 5 )
+MarginContainer/constants/margin_bottom = 10
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 10
+MarginContainer/constants/margin_top = 10
+Panel/styles/panel = SubResource( 3 )
+
+[node name="LocalConnection" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -246.5
+margin_top = 32.1429
+margin_right = 246.5
+margin_bottom = 126.143
+theme = SubResource( 7 )
+text = "SchoolBoyBattle"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Connection" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -431.0
+margin_top = 148.0
+margin_right = 431.0
+margin_bottom = 470.0
+theme = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Connection"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -431.0
+margin_top = -156.0
+margin_right = 431.0
+margin_bottom = 156.0
+theme = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Connection/MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 852.0
+margin_bottom = 302.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="Connection/MarginContainer/VBoxContainer"]
+margin_right = 842.0
+margin_bottom = 240.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 10
+custom_constants/hseparation = 10
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEditPseudo" type="LineEdit" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
+margin_right = 416.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "Pseudonyme"
+
+[node name="ButtonHost" type="Button" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 426.0
+margin_right = 842.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 2 )
+text = "Héberger une partie"
+
+[node name="LineEditAddress" type="LineEdit" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 91.0
+margin_right = 416.0
+margin_bottom = 172.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "127.0.0.1"
+placeholder_text = "Adresse IP"
+
+[node name="ButtonJoin" type="Button" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 426.0
+margin_top = 91.0
+margin_right = 842.0
+margin_bottom = 172.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 2 )
+text = "Rejoindre une partie"
+
+[node name="Control" type="Control" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 182.0
+margin_right = 416.0
+margin_bottom = 240.0
+
+[node name="ButtonHostOnly" type="Button" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 426.0
+margin_top = 182.0
+margin_right = 842.0
+margin_bottom = 240.0
+theme = ExtResource( 2 )
+text = "Serveur uniquement"
+
+[node name="LabelError" type="Label" parent="Connection/MarginContainer/VBoxContainer"]
+margin_top = 244.0
+margin_right = 842.0
+margin_bottom = 292.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WaitingRoom" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -277.0
+margin_top = -231.0
+margin_right = 278.0
+margin_bottom = 231.0
+theme = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="WaitingRoom"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WaitingRoom/MarginContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 535.0
+margin_bottom = 442.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="WaitingRoom/MarginContainer/VBoxContainer"]
+margin_right = 515.0
+margin_bottom = 48.0
+text = "Liste d'attente"
+
+[node name="PlayersList" type="ItemList" parent="WaitingRoom/MarginContainer/VBoxContainer"]
+margin_top = 52.0
+margin_right = 515.0
+margin_bottom = 308.0
+size_flags_vertical = 3
+
+[node name="IPAddress" type="Label" parent="WaitingRoom/MarginContainer/VBoxContainer"]
+margin_top = 312.0
+margin_right = 515.0
+margin_bottom = 360.0
+text = "Adresse IP : "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WaitingRoom/MarginContainer/VBoxContainer"]
+margin_top = 364.0
+margin_right = 515.0
+margin_bottom = 422.0
+
+[node name="ButtonBack" type="Button" parent="WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 255.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
+text = "Retour"
+
+[node name="ButtonStart" type="Button" parent="WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 259.0
+margin_right = 515.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
+text = "START"
+
+[node name="ErrorDialog" type="AcceptDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -181.052
+margin_top = -73.0972
+margin_right = -86.0515
+margin_bottom = -15.0972
+rect_scale = Vector2( 3.7533, 3.7533 )
+window_title = "Alerte !"
+
+[connection signal="pressed" from="Connection/MarginContainer/VBoxContainer/GridContainer/ButtonHost" to="." method="_on_ButtonHost_pressed"]
+[connection signal="pressed" from="Connection/MarginContainer/VBoxContainer/GridContainer/ButtonJoin" to="." method="_on_ButtonJoin_pressed"]
+[connection signal="pressed" from="Connection/MarginContainer/VBoxContainer/GridContainer/ButtonHostOnly" to="." method="_on_ButtonHostOnly_pressed"]
+[connection signal="pressed" from="WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer/ButtonBack" to="." method="_on_ButtonBack_pressed"]
+[connection signal="pressed" from="WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer/ButtonStart" to="." method="_on_ButtonStart_pressed"]

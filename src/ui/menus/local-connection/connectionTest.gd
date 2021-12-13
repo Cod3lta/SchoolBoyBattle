@@ -6,20 +6,19 @@ onready var show_ip_address = 	$WaitingRoom/MarginContainer/VBoxContainer/IPAddr
 onready var start_button = 		$WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer/ButtonStart
 onready var back_button = 		$WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer/ButtonBack
 
-onready var join_button = 		$Connection/VBoxContainer/GridContainer/ButtonJoin
-onready var host_button = 		$Connection/VBoxContainer/GridContainer/ButtonHost
-onready var username = 			$Connection/VBoxContainer/GridContainer/LineEditPseudo
-onready var ip_address = 		$Connection/VBoxContainer/GridContainer/LineEditAddress
-onready var error = 			$Connection/VBoxContainer/LabelError
+onready var join_button = 		$Connection/MarginContainer/VBoxContainer/GridContainer/ButtonJoin
+onready var host_button = 		$Connection/MarginContainer/VBoxContainer/GridContainer/ButtonHost
+onready var username = 			$Connection/MarginContainer/VBoxContainer/GridContainer/LineEditPseudo
+onready var ip_address = 		$Connection/MarginContainer/VBoxContainer/GridContainer/LineEditAddress
+onready var error = 			$Connection/MarginContainer/VBoxContainer/LabelError
 
 const MIN_PLAYERS = 1
 
 func _ready():
-	gamestate.connect("connection_failed", self, "_on_connection_failed")
-	gamestate.connect("connection_succeeded", self, "_on_connection_success")
-	gamestate.connect("player_list_changed", self, "refresh_waiting_room")
-	gamestate.connect("game_ended", self, "_on_game_ended")
-	gamestate.connect("game_error", self, "_on_game_error")
+	Gamestate.connect("connection_failed", self, "_on_connection_failed")
+	Gamestate.connect("connection_succeeded", self, "_on_connection_success")
+	Gamestate.connect("player_list_changed", self, "refresh_waiting_room")
+	Gamestate.connect("game_error", self, "_on_game_error")
 	
 	$Connection.show()
 	$WaitingRoom.hide()
@@ -37,14 +36,14 @@ func _ready():
 func _on_ButtonHost_pressed():
 	$WaitingRoom.show()
 	$Connection.hide()
-	gamestate.host_and_play_game(username.text)
+	Gamestate.host_and_play_game(username.text)
 	refresh_waiting_room()
 
 
 func _on_ButtonHostOnly_pressed():
 	$WaitingRoom.show()
 	$Connection.hide()
-	gamestate.host_game()
+	Gamestate.host_game()
 	refresh_waiting_room()
 
 
@@ -61,15 +60,15 @@ func _on_ButtonJoin_pressed():
 	host_button.disabled = true
 	join_button.disabled = true
 
-	gamestate.join_game(ip_address.text, username.text)
+	Gamestate.join_game(ip_address.text, username.text)
 
 
 func _on_ButtonStart_pressed():
-	gamestate.begin_game()
+	Gamestate.begin_game()
 
 
 func _on_ButtonBack_pressed():
-	gamestate.end_game()
+	Gamestate.end_game()
 	get_tree().network_peer = null
 	$Connection.show()
 	$WaitingRoom.hide()
@@ -78,13 +77,6 @@ func _on_ButtonBack_pressed():
 func _on_connection_success():
 	$Connection.hide()
 	$WaitingRoom.show()
-
-func _on_game_ended():
-	show()
-	$Connection.show()
-	$WaitingRoom.hide()
-	join_button.disabled = false
-	host_button.disabled = false
 
 
 func _on_game_error(errtxt):
@@ -95,7 +87,7 @@ func _on_game_error(errtxt):
 
 
 func refresh_waiting_room():
-	var players = gamestate.get_players_list()
+	var players = Gamestate.get_players_list()
 	players_list.clear()
 	for id in players:
 		var p = players[id]

@@ -44,7 +44,6 @@ func _ready():
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
 
-
 """#################################################
 				EVERY INSTANCE
 #################################################"""
@@ -99,7 +98,7 @@ remote func pre_start_game(players_init: Dictionary):
 	var game = preload("res://src/game.tscn").instance()
 	get_tree().get_root().add_child(game)
 	# Hide the LocalConnection node (not remove it)
-	get_tree().get_root().get_node("LocalConnection").hide()
+	get_tree().get_root().get_node("LocalConnection").queue_free()
 	# Init the Game node
 	game.init(players_init)
 	
@@ -117,12 +116,11 @@ remote func post_start_game():
 
 
 func end_game():
-	if has_node("/root/World"): # Game is in progress.
-		# End it
-		get_node("/root/World").queue_free()
-
-	emit_signal("game_ended")
+	if has_node("/root/Game"): # Game is in progress.
+		get_node("/root/Game").queue_free() # End it
+		get_tree().get_root().add_child(load("res://src/ui/menus/local-connection/connectionTest.tscn").instance())
 	players.clear()
+	emit_signal("game_ended")
 
 
 """#####################
@@ -173,8 +171,9 @@ func _connected_ok():
 
 # Callback from SceneTree, only for clients (not server).
 func _server_disconnected():
-	emit_signal("game_error", "Server disconnected")
+	print("server disconnected")
 	end_game()
+	emit_signal("game_error", "Server disconnected")
 
 
 # Callback from SceneTree, only for clients (not server).

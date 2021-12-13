@@ -24,15 +24,22 @@ signal update_progressbar
 
 
 func init(players_init: Dictionary):
+	randomize()
+	
 	init_client(players_init)
 	
 	if get_tree().is_network_server():
 		self.init_server()
 	
-	if gamestate.get_server_only():
-		$CameraServerOnly.visible = true
-		$CameraServerOnly.current = true
+	if Gamestate.get_server_only():
+		$YSort/Map/CameraServerOnly.visible = true
+		$YSort/Map/CameraServerOnly.current = true
 		$CanvasLayer/HUD.visible = false
+
+
+"""#####################
+Init client
+#####################"""
 
 
 func init_client(players_init: Dictionary):
@@ -40,6 +47,7 @@ func init_client(players_init: Dictionary):
 	var i_black = 0
 	var i_red = 0
 	
+	# Create every player
 	for id in players_init:
 		var p_init = players_init[id]
 		
@@ -67,14 +75,19 @@ func init_client(players_init: Dictionary):
 	self.connect("update_progressbar", $CanvasLayer/HUD/ProgressBar, "update_progressbar")
 
 
+"""#####################
+Init server
+#####################"""
+
+
 func init_server():
 	# Candy spawners
-	var candy_spawner = load("res://src/scripts/server/candySpawners/CandySpawners.tscn").instance()
+	var candy_spawner = load("res://src/scripts/server/candySpawners/candySpawners.tscn").instance()
 	self.add_child(candy_spawner)
 	candy_spawner.init($YSort/Map/CandySpawners.get_children())
 	
 	# Candy trails
-	var trails = load("res://src/scripts/server/trails/Trails.tscn").instance()
+	var trails = load("res://src/scripts/server/trails/trails.tscn").instance()
 	self.add_child(trails)
 	trails.init($YSort/Players)
 	$YSort/Map.connect("player_arrived_at_home", self, "add_points")
@@ -87,28 +100,28 @@ func set_main_player():
 		get_node("YSort/Players/" + str(get_tree().get_network_unique_id())), 
 		"_on_joystick_event"
 	)
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
 		
 
 
 """########################################
-				PROCESS
+				START / END GAME
 ########################################"""
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	
-	if get_tree().is_network_server():
-		pass # self.draw_player_trail()
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	play_music()
+	$CanvasLayer/HUD/Timer.set_time($GeneralTimer.wait_time)
 
 
-remote func spawn_candy(pos, type):
-	pass
+func play_music():
+	pass #$AudioStreamPlayer.play(0)
+
+
+func _on_GeneralTimer_timeout():
+	# Game ended
+	get_tree().get_root().add_child(load("res://src/ui/menus/game-ended/gameEnded.tscn").instance())
+	get_node("/root/Game").queue_free()
 
 
 """########################################
@@ -116,18 +129,17 @@ remote func spawn_candy(pos, type):
 ########################################"""
 
 # Only called on the server
-func add_points(player: Player):
+func add_points(player: KinematicBody2D):
 	assert(get_tree().is_network_server())
 	
 	var team: bool = player.team
 	var points: int = player.points_in_queue()
 	
-	print(player.team)
 	match (player.team):
 		player.team_e.RED: self.points['red'] += points
 		player.team_e.BLACK: self.points['black'] += points
 	
-	for id in gamestate.get_clients_list():
+	for id in Gamestate.get_clients_list():
 		rpc_id(id, "update_progressbar_client", self.points)
 	
 	emit_signal("update_progressbar", self.points)

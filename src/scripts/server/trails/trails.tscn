@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://src/scripts/server/trails/Trails.gd" type="Script" id=1]
+[ext_resource path="res://src/scripts/server/trails/trails.gd" type="Script" id=1]
 
 [node name="Trails" type="Node2D"]
 script = ExtResource( 1 )

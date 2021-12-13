@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://src/actors/boss/spriteFrames/pereFouettard.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://src/actors/boss/boss.gd" type="Script" id=2]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( 33.8484, 18.0453, 33.8484, 17.8344, -46.175, 17.9672, -46.1516, 18.0453, -36.1359, 18.0531, -16.1654, 18.0486, 3.9067, 18.0789, 23.8406, 18.0531 )
+
+[node name="Boss" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -150 )
+scale = Vector2( 10, 10 )
+frames = ExtResource( 1 )
+animation = "idle"
+frame = 3
+playing = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 36.1359, 11.9625 )
+occluder = SubResource( 1 )

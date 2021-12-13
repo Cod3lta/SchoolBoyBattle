@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/light.png-87539b10c4b4cebc046b6b91ffea6f69.stex"
+path="res://.import/girl-black-idle-singleframe.png-ea9d4da39d9548906fcc1a416ff2f537.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/light.png"
-dest_files=[ "res://.import/light.png-87539b10c4b4cebc046b6b91ffea6f69.stex" ]
+source_file="res://assets/player/idle/girl-black-idle-singleframe.png"
+dest_files=[ "res://.import/girl-black-idle-singleframe.png-ea9d4da39d9548906fcc1a416ff2f537.stex" ]
 
 [params]
 

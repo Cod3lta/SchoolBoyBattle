@@ -12,7 +12,7 @@ const DISTANCE_BETWEEN_CANDIES = 120
 
 # Called when the node enters the scene tree for the first time.
 func init(players_node: Node2D):
-	var players = gamestate.get_players_list()
+	var players = Gamestate.get_players_list()
 	
 	for p in players_node.get_children():
 		var id = p.get_name()
@@ -141,7 +141,6 @@ func clear_trail(player: Player):
 	var new_line_2d = Line2D.new()
 	
 	old_line_2d.set_name(old_line_2d.get_name() + "_collect_candies")
-	print(old_line_2d.get_name())
 	remove_child(old_line_2d)
 	$Collect.add_child(old_line_2d)
 	

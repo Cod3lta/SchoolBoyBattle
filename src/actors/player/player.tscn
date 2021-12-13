@@ -1,37 +1,51 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/actors/player/player.gd" type="Script" id=1]
-[ext_resource path="res://src/actors/player/spriteFrames/boyRed.tres" type="SpriteFrames" id=2]
-[ext_resource path="res://assets/fonts/Roboto/Roboto-Bold.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://src/actors/player/spriteFrames/girlRed.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://assets/themes/main_theme.tres" type="Theme" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6, 0.5 )
+extents = Vector2( 40, 5 )
 
-[sub_resource type="DynamicFont" id=2]
-outline_size = 2
-outline_color = Color( 0, 0, 0, 1 )
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 6 )
+[sub_resource type="ParticlesMaterial" id=3]
+lifetime_randomness = 0.65
+emission_shape = 2
+emission_box_extents = Vector3( 2, 0, 1 )
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 30.0
+gravity = Vector3( 0, 250, 0 )
+initial_velocity = 138.3
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 13.0
+color = Color( 1, 1, 1, 0.290196 )
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 50.2059
 
 [node name="Player" type="KinematicBody2D"]
-scale = Vector2( 10, 10 )
 collision_mask = 4
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 3.49033 )
+position = Vector2( 0, 45 )
 shape = SubResource( 1 )
 
+[node name="Footsteps" type="Particles2D" parent="."]
+position = Vector2( 0, 45 )
+local_coords = false
+process_material = SubResource( 3 )
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -3.00909 )
+position = Vector2( 0, -20 )
+scale = Vector2( 10, 10 )
 frames = ExtResource( 2 )
 animation = "idle"
-frame = 3
+frame = 2
 playing = true
 
 [node name="Camera" type="Camera2D" parent="."]
-position = Vector2( 0, -3.00909 )
 smoothing_enabled = true
 smoothing_speed = 10.0
 editor_draw_screen = false
@@ -41,14 +55,22 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -13.9851
-margin_top = -18.0719
-margin_right = 79.0149
-margin_bottom = 0.92807
-rect_scale = Vector2( 0.3, 0.3 )
-custom_fonts/font = SubResource( 2 )
+margin_left = -91.5
+margin_top = -169.4
+margin_right = 91.5
+margin_bottom = -121.4
+theme = ExtResource( 3 )
 text = "Player Name"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CandiesCollider" type="Area2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CandiesCollider"]
+shape = SubResource( 5 )
+
+[connection signal="area_entered" from="CandiesCollider" to="." method="_on_CandiesCollider_area_entered"]
+[connection signal="body_entered" from="CandiesCollider" to="." method="_on_CandiesCollider_body_entered"]

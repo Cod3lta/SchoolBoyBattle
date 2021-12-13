@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/light.png-87539b10c4b4cebc046b6b91ffea6f69.stex"
+path="res://.import/boy-red-idle-singleframe.png-4e5d6a1e4823288c2d738c1ca9b40b34.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/light.png"
-dest_files=[ "res://.import/light.png-87539b10c4b4cebc046b6b91ffea6f69.stex" ]
+source_file="res://assets/player/idle/boy-red-idle-singleframe.png"
+dest_files=[ "res://.import/boy-red-idle-singleframe.png-4e5d6a1e4823288c2d738c1ca9b40b34.stex" ]
 
 [params]
 

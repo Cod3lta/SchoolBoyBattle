@@ -34,6 +34,7 @@ func _init():
 	self.gender = gender_e.GIRL
 	self.team = team_e.RED
 
+
 # Used as a constructor
 func init(name: String, gender: bool, team: int, position: Vector2):
 	$NameTag.set_text(name)
@@ -41,15 +42,21 @@ func init(name: String, gender: bool, team: int, position: Vector2):
 	self.team = team
 	self.position = position
 	self.player_name = name
-	if team:
-		self.set_collision_layer_bit(4, true)
-	else:
-		self.set_collision_layer_bit(3, true)
 
 
 # Called when the node enters the scene tree for the first time
 func _ready():
 	self.init_sprite_frame()
+	
+	if get_tree().is_network_server():
+		$CandiesCollider.set_collision_mask_bit(1, true)
+		if team:
+			# Team is black, the player will also detect red candies
+			$CandiesCollider.set_collision_mask_bit(3, true)
+		else:
+			# Team is red, the player will also detect black candies
+			$CandiesCollider.set_collision_mask_bit(4, true)
+	
 
 
 """########################################
@@ -61,8 +68,8 @@ func _process(delta):
 	
 	# Calculate the movements
 	run()
-	
 	multiplayer_movements()
+	
 	apply_movements()
 	
 	animate()
@@ -104,13 +111,6 @@ func get_player_action_input():
 ########################################"""
 
 
-func animate():
-	$AnimatedSprite.animation = get_animation()
-	$AnimatedSprite.flip_h = self.flip_h
-	if abs(self.velocity.x) > 0:
-		self.flip_h = self.velocity.x < 0
-
-
 func init_sprite_frame():
 	var sprite_frames: SpriteFrames
 	if int(self.gender) == self.gender_e.BOY  and int(self.team) == self.team_e.RED:
@@ -124,8 +124,17 @@ func init_sprite_frame():
 	$AnimatedSprite.set_sprite_frames(sprite_frames)
 
 
+func animate():
+	$AnimatedSprite.animation = get_animation()
+	$AnimatedSprite.flip_h = self.flip_h
+	if abs(self.velocity.x) > 0:
+		self.flip_h = self.velocity.x < 0
+	# footsteps particles
+	$Footsteps.emitting = self.velocity.length() > 0
+
+
 func get_animation():
-	if abs(self.velocity.x) > 0 || abs(self.velocity.y) > 0:
+	if self.velocity.length() > 0:
 		return "run"
 	return "idle"
 
@@ -137,7 +146,8 @@ func get_animation():
 
 func multiplayer_movements():
 	if is_network_master():
-		rset_unreliable("puppet_velocity", velocity)
+		# TODO : don't send the position and velocity in every frame
+		rset_unreliable("puppet_velocity", velocity) # used for the puppet's animations
 		rset_unreliable("puppet_pos", position)
 	else:
 		position = puppet_pos
@@ -148,25 +158,31 @@ func multiplayer_movements():
 				CANDIES
 ########################################"""
 
-
-func take_candy(candy: Node2D):
-	assert(candy is Node2D)
+func _on_CandiesCollider_area_entered(candy: Area2D):
+	if not get_tree().is_network_server(): return
+	if not candy is Candy: return
 	
 	var candies_to_append = Array()
 	
-	if candy.taken_by != null:
-		# Picked up from the ground
-		candies_to_append = self.steal_candies(candy)
-	else:
-		# Steal the candies from another player
+	if candy.taken_by == null:
 		candies_to_append.append(candy)
+	else:
+		candies_to_append = self.steal_candies(candy)
 	
 	candies_to_append.invert()
 	
 	for c in candies_to_append:
 		self.trail.insert(0, c)
-		c.taken_by = self
-		c.set_collision_team(not bool(self.team))
+		
+		# Tell the client instances of this candy that it needs to be activated
+		for id in Gamestate.get_clients_list():
+			c.rpc_id(id, "client_take")
+		
+		c.take(self)
+		
+		# Set the candy's color
+		for id in Gamestate.get_players_list():
+			c.rpc_id(id, "set_color_team", bool(self.team))
 		c.set_color_team(bool(self.team))
 
 
@@ -187,7 +203,7 @@ func loose_candies(from: Node2D) -> Array:
 
 
 func arrive_at_home():
-	print("I'm at home")
+	pass
 
 func points_in_queue() -> int:
 	var points: int = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=2]
+[gd_scene load_steps=76 format=2]
 
 [ext_resource path="res://assets/world/base/snow.png" type="Texture" id=1]
 [ext_resource path="res://assets/world/base/planks.png" type="Texture" id=2]
@@ -9,7 +9,7 @@
 [ext_resource path="res://assets/bosses/carpet/carpets-red.png" type="Texture" id=7]
 [ext_resource path="res://src/scripts/server/candySpawners/spawner.gd" type="Script" id=8]
 [ext_resource path="res://assets/world/base/face-outside-1.png" type="Texture" id=9]
-[ext_resource path="res://src/actors/boss/Boss.tscn" type="PackedScene" id=10]
+[ext_resource path="res://src/actors/boss/boss.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/world/base/face.png" type="Texture" id=11]
 [ext_resource path="res://assets/world/base/path/path.png" type="Texture" id=12]
 [ext_resource path="res://assets/world/base/walls/walls.png" type="Texture" id=13]
@@ -55,14 +55,8 @@
 0/shapes = [  ]
 0/z_index = 0
 
-[sub_resource type="OccluderPolygon2D" id=3]
-polygon = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
-
 [sub_resource type="ConvexPolygonShape2D" id=4]
 points = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
-
-[sub_resource type="OccluderPolygon2D" id=5]
-polygon = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=6]
 points = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
@@ -163,9 +157,6 @@ points = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
 [sub_resource type="ConvexPolygonShape2D" id=38]
 points = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
 
-[sub_resource type="OccluderPolygon2D" id=39]
-polygon = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
-
 [sub_resource type="ConvexPolygonShape2D" id=40]
 points = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
 
@@ -177,7 +168,6 @@ points = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
 0/region = Rect2( 0, 0, 13, 13 )
 0/tile_mode = 0
 0/occluder_offset = Vector2( 0, 0 )
-0/occluder = SubResource( 3 )
 0/navigation_offset = Vector2( 0, 0 )
 0/shape_offset = Vector2( 0, 0 )
 0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -199,7 +189,6 @@ points = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
 1/region = Rect2( 0, 0, 13, 13 )
 1/tile_mode = 0
 1/occluder_offset = Vector2( 0, 0 )
-1/occluder = SubResource( 5 )
 1/navigation_offset = Vector2( 0, 0 )
 1/shape_offset = Vector2( 0, 0 )
 1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -341,7 +330,6 @@ points = PoolVector2Array( 13, 13, 0, 13, 0, 0, 13, 0 )
 3/region = Rect2( 0, 0, 13, 13 )
 3/tile_mode = 0
 3/occluder_offset = Vector2( 0, 0 )
-3/occluder = SubResource( 39 )
 3/navigation_offset = Vector2( 0, 0 )
 3/shape_offset = Vector2( 0, 0 )
 3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -680,7 +668,7 @@ extents = Vector2( 161.399, 259.573 )
 [node name="Map" type="YSort"]
 script = ExtResource( 5 )
 
-[node name="Tilemaps" type="Node2D" parent="."]
+[node name="Tilemaps" type="YSort" parent="."]
 
 [node name="Background" type="Node2D" parent="Tilemaps"]
 z_index = -1
@@ -703,7 +691,7 @@ cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 collision_layer = 4
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( -655361, 0, 8, -720896, 0, 6, -720895, 0, 196609, -720894, 0, 196609, -720893, 0, 3, -720890, 0, 196608, -720889, 0, 196610, -720884, 0, 196611, -589825, 0, 65544, -655360, 0, 65547, -655357, 0, 131073, -655356, 0, 196610, -655351, 0, 196611, -524289, 0, 196616, -589824, 0, 196619, -65525, 0, 196608, -65524, 0, 3, 12, 0, 65536, 65536, 0, 8, 65537, 0, 10, 65538, 0, 10, 65539, 0, 10, 65540, 0, 10, 65541, 0, 10, 65542, 0, 10, 65543, 0, 10, 65544, 0, 11, 65548, 0, 65536, 196607, 0, 8, 131072, 0, 65541, 131073, 0, 65546, 131074, 0, 65546, 131075, 0, 65546, 131076, 0, 65546, 131077, 0, 65546, 131078, 0, 65546, 131079, 0, 65546, 131080, 0, 65542, 131081, 0, 11, 131084, 0, 65536, 131087, 0, 8, 131088, 0, 11, 262143, 0, 65544, 196608, 0, 65546, 196609, 0, 65546, 196610, 0, 65546, 196611, 0, 65546, 196612, 0, 65546, 196613, 0, 65546, 196614, 0, 65546, 196615, 0, 65546, 196616, 0, 65546, 196617, 0, 65547, 196619, 0, 8, 196620, 0, 65543, 196623, 0, 65544, 196624, 0, 65547, 327678, 0, 8, 327679, 0, 65541, 262144, 0, 65546, 262145, 0, 65546, 262146, 0, 65546, 262147, 0, 65546, 262148, 0, 65546, 262149, 0, 131078, 262150, 0, 196617, 262151, 0, 131077, 262152, 0, 65546, 262153, 0, 65542, 262154, 0, 10, 262155, 0, 65541, 262156, 0, 65542, 262157, 0, 11, 262159, 0, 65544, 262160, 0, 65547, 393214, 0, 196616, 393215, 0, 131077, 327680, 0, 65546, 327681, 0, 65546, 327682, 0, 65546, 327683, 0, 131078, 327684, 0, 196617, 327685, 0, 196619, 327687, 0, 196616, 327688, 0, 196617, 327689, 0, 131077, 327690, 0, 65546, 327691, 0, 65546, 327692, 0, 65546, 327693, 0, 65542, 327694, 0, 10, 327695, 0, 131082, 327696, 0, 196619, 458751, 0, 196616, 393216, 0, 196617, 393217, 0, 196617, 393218, 0, 196617, 393219, 0, 196619, 393225, 0, 196616, 393226, 0, 196617, 393227, 0, 196617, 393228, 0, 196617, 393229, 0, 196617, 393230, 0, 196618, 393231, 0, 196619, 458766, 0, 65536, 458768, 0, 196611, 524298, 0, 1, 524299, 0, 196609, 524300, 0, 3, 524302, 0, 65536, 589834, 0, 65536, 589836, 0, 131073, 589837, 0, 196609, 589838, 0, 131075, 589841, 0, 0, 655370, 0, 131072, 655377, 0, 131072, 720909, 0, 196611 )
+tile_data = PoolIntArray( -655361, 0, 8, -720896, 0, 6, -720895, 0, 196609, -720894, 0, 196609, -720893, 0, 3, -720890, 0, 196608, -720889, 0, 196610, -720884, 0, 196611, -589825, 0, 65544, -655360, 0, 65547, -655357, 0, 131073, -655356, 0, 196610, -655351, 0, 196611, -524289, 0, 196616, -589824, 0, 196619, -65525, 0, 196608, -65524, 0, 3, 12, 0, 65536, 65536, 0, 8, 65537, 0, 10, 65538, 0, 10, 65539, 0, 10, 65540, 0, 10, 65541, 0, 10, 65542, 0, 10, 65543, 0, 10, 65544, 0, 11, 65548, 0, 65536, 196607, 0, 8, 131072, 0, 65541, 131073, 0, 65546, 131074, 0, 65546, 131075, 0, 65546, 131076, 0, 65546, 131077, 0, 65546, 131078, 0, 65546, 131079, 0, 65546, 131080, 0, 65542, 131081, 0, 11, 131084, 0, 65536, 131087, 0, 8, 131088, 0, 11, 262143, 0, 65544, 196608, 0, 65546, 196609, 0, 65546, 196610, 0, 65546, 196611, 0, 65546, 196612, 0, 65546, 196613, 0, 65546, 196614, 0, 65546, 196615, 0, 65546, 196616, 0, 65546, 196617, 0, 65547, 196619, 0, 8, 196620, 0, 65543, 196623, 0, 65544, 196624, 0, 65547, 327678, 0, 8, 327679, 0, 65541, 262144, 0, 65546, 262145, 0, 65546, 262146, 0, 65546, 262147, 0, 65546, 262148, 0, 65546, 262149, 0, 131078, 262150, 0, 196617, 262151, 0, 131077, 262152, 0, 65546, 262153, 0, 65542, 262154, 0, 10, 262155, 0, 65541, 262156, 0, 65547, 262159, 0, 65544, 262160, 0, 65547, 393214, 0, 196616, 393215, 0, 131077, 327680, 0, 65546, 327681, 0, 65546, 327682, 0, 65546, 327683, 0, 131078, 327684, 0, 196617, 327685, 0, 196619, 327687, 0, 196616, 327688, 0, 196617, 327689, 0, 131077, 327690, 0, 65546, 327691, 0, 131078, 327692, 0, 196619, 327695, 0, 131076, 327696, 0, 196619, 458751, 0, 196616, 393216, 0, 196617, 393217, 0, 196617, 393218, 0, 196617, 393219, 0, 196619, 393225, 0, 196616, 393226, 0, 196617, 393227, 0, 196619, 393231, 0, 131072, 458768, 0, 0, 524298, 0, 1, 524299, 0, 196609, 524300, 0, 3, 524302, 0, 1, 524303, 0, 196609, 524304, 0, 131075, 589834, 0, 65536, 589836, 0, 131073, 589837, 0, 196609, 589838, 0, 131075, 589841, 0, 0, 655369, 0, 196608, 655370, 0, 131075, 655377, 0, 131072, 720909, 0, 196611 )
 
 [node name="Inside" type="TileMap" parent="Tilemaps/Background"]
 light_mask = 3
@@ -730,6 +718,7 @@ tile_data = PoolIntArray( -458756, 1, 0, -458755, 1, 1, -458754, 1, 2, -393220, 
 [node name="Dynamic" type="YSort" parent="Tilemaps"]
 
 [node name="Barriers" type="TileMap" parent="Tilemaps/Dynamic"]
+position = Vector2( 0, -50 )
 scale = Vector2( 10, 10 )
 tile_set = SubResource( 62 )
 cell_size = Vector2( 13, 13 )
@@ -738,7 +727,7 @@ cell_y_sort = true
 collision_layer = 4
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 393222, 0, 196608, 393223, 0, 0, 393224, 0, 65537, 458760, 0, 131072, 458761, 0, 0, 458762, 0, 1, 458763, 0, 0, 458764, 0, 0, 458765, 0, 65537, 524301, 0, 196610, 524303, 0, 65538, 589835, 0, 65538, 589839, 0, 131074, 655371, 0, 131072, 655372, 0, 1, 655373, 0, 0, 655374, 0, 0, 655375, 0, 131073 )
+tile_data = PoolIntArray( 1, 0, 196608, 2, 0, 196609, 393222, 0, 196608, 393223, 0, 0, 393224, 0, 65537, 458760, 0, 131072, 458761, 0, 1, 458762, 0, 0, 458763, 0, 196609, 589835, 0, 65538, 589839, 0, 65536, 589840, 0, 196609, 655371, 0, 131072, 655372, 0, 1, 655373, 0, 0, 655374, 0, 0, 655375, 0, 131073 )
 
 [node name="Foreground" type="Node2D" parent="Tilemaps"]
 z_index = 1
@@ -746,10 +735,10 @@ z_index = 1
 [node name="Bosses" type="YSort" parent="."]
 
 [node name="Red" parent="Bosses" instance=ExtResource( 10 )]
-position = Vector2( -242.993, -1017.08 )
+position = Vector2( -321.076, -999.971 )
 
 [node name="Black" parent="Bosses" instance=ExtResource( 10 )]
-position = Vector2( 2463.64, 176.88 )
+position = Vector2( 2449.67, 238.676 )
 script = SubResource( 63 )
 type = 1
 
@@ -757,8 +746,7 @@ type = 1
 
 [node name="ZoneRed" type="Area2D" parent="SpawnZones"]
 position = Vector2( -409.254, -802.713 )
-collision_layer = 8
-collision_mask = 10
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnZones/ZoneRed"]
 position = Vector2( 52.3496, 22.7908 )
@@ -766,8 +754,7 @@ shape = SubResource( 64 )
 
 [node name="ZoneBlack" type="Area2D" parent="SpawnZones"]
 position = Vector2( 2407.1, 396.239 )
-collision_layer = 16
-collision_mask = 18
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnZones/ZoneBlack"]
 position = Vector2( 30.9768, -6.34738 )
@@ -881,6 +868,46 @@ script = ExtResource( 8 )
 [node name="15" type="Position2D" parent="CandySpawners"]
 position = Vector2( 1495, -65 )
 script = ExtResource( 8 )
+
+[node name="16" type="Position2D" parent="CandySpawners"]
+position = Vector2( 1625, 1105 )
+script = ExtResource( 8 )
+
+[node name="17" type="Position2D" parent="CandySpawners"]
+position = Vector2( 1495, 1105 )
+script = ExtResource( 8 )
+
+[node name="18" type="Position2D" parent="CandySpawners"]
+position = Vector2( 975, 975 )
+script = ExtResource( 8 )
+
+[node name="19" type="Position2D" parent="CandySpawners"]
+position = Vector2( 845, 1105 )
+script = ExtResource( 8 )
+
+[node name="20" type="Position2D" parent="CandySpawners"]
+position = Vector2( 715, 1105 )
+script = ExtResource( 8 )
+
+[node name="21" type="Position2D" parent="CandySpawners"]
+position = Vector2( 1235, 845 )
+script = ExtResource( 8 )
+
+[node name="22" type="Position2D" parent="CandySpawners"]
+position = Vector2( 1365, 845 )
+script = ExtResource( 8 )
+
+[node name="23" type="Position2D" parent="CandySpawners"]
+position = Vector2( 845, -65 )
+script = ExtResource( 8 )
+
+[node name="24" type="Position2D" parent="CandySpawners"]
+position = Vector2( 975, -65 )
+script = ExtResource( 8 )
+
+[node name="CameraServerOnly" type="Camera2D" parent="."]
+position = Vector2( 987.384, 75.877 )
+zoom = Vector2( 7, 7 )
 
 [connection signal="body_entered" from="SpawnZones/ZoneRed" to="." method="_on_home_body_entered"]
 [connection signal="body_entered" from="SpawnZones/ZoneBlack" to="." method="_on_home_body_entered"]

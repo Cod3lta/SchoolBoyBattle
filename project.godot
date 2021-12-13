@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
+"base": "Area2D",
 "class": "Candy",
 "language": "GDScript",
 "path": "res://src/actors/candy/candy.gd"
@@ -50,7 +50,7 @@ _global_script_classes=[ {
 "path": "res://src/scripts/server/candySpawners/spawner.gd"
 } ]
 _global_script_class_icons={
-"Candy": "res://assets/candy/candy-icon.svg",
+"Candy": "",
 "Game": "",
 "MandarinLarge": "res://assets/candy/mandarin-big.png",
 "MandarinSmall": "res://assets/candy/mandarin-small.png",
@@ -63,14 +63,16 @@ _global_script_class_icons={
 [application]
 
 config/name="schoolboybattle"
-run/main_scene="res://src/ui/menus/local-connection/ConnectionTest.tscn"
+run/main_scene="res://src/ui/menus/local-connection/connectionTest.tscn"
 boot_splash/image="res://assets/brand/Personnage.png"
 boot_splash/fullsize=false
 config/icon="res://assets/brand/temp-logo.png"
 
 [autoload]
 
-gamestate="*res://src/scripts/gamestate.gd"
+Database="*res://src/scripts/database.gd"
+Gamestate="*res://src/scripts/gamestate.gd"
+ConnectionManager="*res://src/scripts/client/connectionManager.gd"
 
 [display]
 
@@ -115,8 +117,8 @@ pointing/emulate_touch_from_mouse=true
 2d_physics/layer_1="player"
 2d_physics/layer_2="candy"
 2d_physics/layer_3="wall"
-2d_physics/layer_4="team_red"
-2d_physics/layer_5="team_black"
+2d_physics/layer_4="candy_red"
+2d_physics/layer_5="candy_black"
 
 [physics]
 
