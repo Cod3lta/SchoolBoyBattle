@@ -1,0 +1,305 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://assets/brand/logo_v2.png" type="Texture" id=1]
+[ext_resource path="res://assets/themes/main_theme.tres" type="Theme" id=2]
+[ext_resource path="res://assets/brand/Personnage.png" type="Texture" id=3]
+[ext_resource path="res://assets/player/idle/boy-red-idle.png" type="Texture" id=4]
+[ext_resource path="res://src/ui/menus/home/Home.gd" type="Script" id=5]
+[ext_resource path="res://assets/bosses/idle/boss-red-idle.png" type="Texture" id=6]
+[ext_resource path="res://assets/bosses/idle/boss-black-idle.png" type="Texture" id=7]
+[ext_resource path="res://assets/player/idle/girl-black-idle.png" type="Texture" id=8]
+[ext_resource path="res://assets/player/run/boy-red-run.png" type="Texture" id=9]
+[ext_resource path="res://assets/player/run/girl-black-run.png" type="Texture" id=10]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+render_mode blend_mix;
+uniform float fattyness = 0.85;
+
+uniform vec2 offset = vec2(8.0, 8.0);
+uniform vec4 modulate : hint_color;
+
+void fragment() {
+	vec2 ruv = UV - vec2(0.5, 0.0);
+	vec2 dir = normalize(ruv);
+	float len = length(ruv);
+
+	len = pow(len * 2.0, fattyness) * 0.5;
+	ruv = len * dir;
+
+	vec4 col = texture(TEXTURE, ruv + vec2(0.5, 0.0));
+
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/fattyness = 0.85
+shader_param/offset = Vector2( 8, 8 )
+shader_param/modulate = null
+
+[sub_resource type="Animation" id=6]
+resource_name = "characters_entering"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("BoyRed:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.83 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -688.912, 106.787 ), Vector2( -174.864, 106.787 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("GirlBlack:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.18, 1.98 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 680.141, 108.127 ), Vector2( 680.141, 108.127 ), Vector2( 203.891, 108.127 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BoyRed:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.83 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 9 ), ExtResource( 4 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("BoyRed:hframes")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1.83 ),
+"transitions": PoolRealArray( 1e-05, 1 ),
+"update": 1,
+"values": [ 10, 6 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("BoyRed:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.78, 0.84, 0.9, 0.96, 1.02, 1.08, 1.14, 1.2, 1.26, 1.32, 1.38, 1.44, 1.5, 1.56, 1.62, 1.68, 1.74, 1.83 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("GirlBlack:texture")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.18, 1.98 ),
+"transitions": PoolRealArray( 1e-05, 1 ),
+"update": 1,
+"values": [ ExtResource( 10 ), ExtResource( 8 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("GirlBlack:hframes")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.18, 1.98 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 10, 6 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("GirlBlack:frame")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.78, 0.84, 0.9, 0.96, 1.02, 1.08, 1.14, 1.2, 1.26, 1.32, 1.38, 1.44, 1.5, 1.56, 1.62, 1.68, 1.74, 1.8, 1.86, 1.92, 1.98 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "characters_idle"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("BoyRed:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("GirlBlack:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.11716, 0.31716, 0.51716, 0.71716, 0.91716, 1.11716 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "boss_idle"
+length = 2.0
+loop = true
+step = 0.33
+tracks/0/type = "value"
+tracks/0/path = NodePath("BossRed:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.33, 0.66, 0.99, 1.32, 1.65 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("BossBlack:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.264695, 0.594695, 0.924695, 1.2547, 1.5847, 1.9147 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
+[node name="Home" type="VBoxContainer"]
+margin_left = 50.0
+margin_top = 50.0
+margin_right = 1230.0
+margin_bottom = 548.0
+theme = ExtResource( 2 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Logo" type="TextureRect" parent="."]
+material = SubResource( 4 )
+margin_right = 1180.0
+margin_bottom = 218.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.19
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CharactersOld" type="TextureRect" parent="."]
+visible = false
+margin_top = 100.0
+margin_right = 1180.0
+margin_bottom = 168.0
+size_flags_vertical = 3
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="Characters" type="HBoxContainer" parent="."]
+margin_left = 590.0
+margin_top = 238.0
+margin_right = 590.0
+margin_bottom = 388.0
+rect_min_size = Vector2( 0, 150 )
+size_flags_horizontal = 4
+
+[node name="BoyRed" type="Sprite" parent="Characters"]
+position = Vector2( -186.056, 106.787 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 9 )
+hframes = 10
+
+[node name="BossRed" type="Sprite" parent="Characters"]
+position = Vector2( -64.0723, 54.7284 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 6 )
+hframes = 6
+
+[node name="BossBlack" type="Sprite" parent="Characters"]
+position = Vector2( 89.122, 55.3981 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 7 )
+hframes = 6
+frame = 5
+
+[node name="GirlBlack" type="Sprite" parent="Characters"]
+position = Vector2( 219.33, 108.127 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 10 )
+flip_h = true
+hframes = 10
+frame = 7
+
+[node name="PlayersAnimation" type="AnimationPlayer" parent="Characters"]
+autoplay = "characters_entering"
+anims/characters_entering = SubResource( 6 )
+anims/characters_idle = SubResource( 5 )
+
+[node name="BossesAnimation" type="AnimationPlayer" parent="Characters"]
+autoplay = "boss_idle"
+anims/boss_idle = SubResource( 7 )
+
+[node name="Control" type="HBoxContainer" parent="."]
+margin_left = 307.0
+margin_top = 408.0
+margin_right = 872.0
+margin_bottom = 498.0
+size_flags_horizontal = 4
+custom_constants/separation = 30
+
+[node name="ButtonParameters" type="Button" parent="Control"]
+margin_right = 336.0
+margin_bottom = 90.0
+text = "Paramètres"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonPlay" type="Button" parent="Control"]
+margin_left = 366.0
+margin_right = 565.0
+margin_bottom = 90.0
+text = "Jouer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="animation_finished" from="Characters/PlayersAnimation" to="." method="_on_PlayersAnimation_animation_finished"]
+[connection signal="pressed" from="Control/ButtonPlay" to="." method="_on_ButtonPlay_pressed"]

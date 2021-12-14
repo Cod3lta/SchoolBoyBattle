@@ -36,7 +36,6 @@ func init(pos: Vector2, type: String):
 func _ready():
 	self.set_network_master(1)
 	set_process(false)
-	print("network master of candy : " + str(get_network_master()))
 
 func set_candy_sprite_frame(sprite_frame: SpriteFrames):
 	$AnimatedSprite.set_sprite_frames(self.sprite_frame)

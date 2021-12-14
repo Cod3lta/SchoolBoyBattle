@@ -95,10 +95,12 @@ Start / stop game
 remote func pre_start_game(players_init: Dictionary):
 	print(players_init)
 
-	var game = preload("res://src/game.tscn").instance()
+	get_node("/root/MenuContainer").queue_free()
+	
+	var game_scene = preload("res://src/game.tscn")
+	var game = game_scene.instance()
 	get_tree().get_root().add_child(game)
-	# Hide the LocalConnection node (not remove it)
-	get_tree().get_root().get_node("LocalConnection").queue_free()
+	
 	# Init the Game node
 	game.init(players_init)
 	
@@ -118,7 +120,7 @@ remote func post_start_game():
 func end_game():
 	if has_node("/root/Game"): # Game is in progress.
 		get_node("/root/Game").queue_free() # End it
-		get_tree().get_root().add_child(load("res://src/ui/menus/local-connection/connectionTest.tscn").instance())
+		get_tree().get_root().add_child(load("res://src/ui/menus/menuContainer.tscn").instance())
 	players.clear()
 	emit_signal("game_ended")
 
@@ -152,6 +154,7 @@ func get_server_only():
 
 func join_game(ip, new_player_name):
 	self.server_only = false
+	self.players.clear()
 	
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(ip, DEFAULT_PORT)
@@ -198,6 +201,8 @@ func host_and_play_game(new_player_name):
 
 # This instance clicked the "host only" button
 func host_game():
+	self.players.clear()
+	
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(peer)

@@ -4,8 +4,8 @@
 [ext_resource path="res://assets/themes/main_theme.tres" type="Theme" id=2]
 [ext_resource path="res://assets/world/base/planks.png" type="Texture" id=3]
 [ext_resource path="res://assets/world/base/snow.png" type="Texture" id=4]
-[ext_resource path="res://assets/themes/CarterOneWhite.tres" type="DynamicFont" id=5]
-[ext_resource path="res://assets/themes/button_styleboxflat.tres" type="StyleBox" id=6]
+[ext_resource path="res://assets/themes/fonts/normal.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/themes/components/button_styleboxflat.tres" type="StyleBox" id=6]
 [ext_resource path="res://assets/themes/CarterOne-Regular.ttf" type="DynamicFontData" id=7]
 
 [sub_resource type="StyleBoxFlat" id=4]
@@ -132,14 +132,14 @@ __meta__ = {
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 852.0
-margin_bottom = 302.0
+margin_bottom = 390.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="GridContainer" type="GridContainer" parent="Connection/MarginContainer/VBoxContainer"]
 margin_right = 842.0
-margin_bottom = 240.0
+margin_bottom = 290.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/vseparation = 10
@@ -150,63 +150,62 @@ __meta__ = {
 }
 
 [node name="LineEditPseudo" type="LineEdit" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
-margin_right = 416.0
-margin_bottom = 81.0
+margin_right = 299.0
+margin_bottom = 90.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "Pseudonyme"
 
 [node name="ButtonHost" type="Button" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
-margin_left = 426.0
+margin_left = 309.0
 margin_right = 842.0
-margin_bottom = 81.0
+margin_bottom = 90.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 2 )
 text = "Héberger une partie"
 
 [node name="LineEditAddress" type="LineEdit" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
-margin_top = 91.0
-margin_right = 416.0
-margin_bottom = 172.0
+margin_top = 100.0
+margin_right = 299.0
+margin_bottom = 190.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "127.0.0.1"
 placeholder_text = "Adresse IP"
 
 [node name="ButtonJoin" type="Button" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
-margin_left = 426.0
-margin_top = 91.0
+margin_left = 309.0
+margin_top = 100.0
 margin_right = 842.0
-margin_bottom = 172.0
+margin_bottom = 190.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 2 )
 text = "Rejoindre une partie"
 
 [node name="Control" type="Control" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
-margin_top = 182.0
-margin_right = 416.0
-margin_bottom = 240.0
+margin_top = 200.0
+margin_right = 299.0
+margin_bottom = 290.0
 
 [node name="ButtonHostOnly" type="Button" parent="Connection/MarginContainer/VBoxContainer/GridContainer"]
-margin_left = 426.0
-margin_top = 182.0
+margin_left = 309.0
+margin_top = 200.0
 margin_right = 842.0
-margin_bottom = 240.0
+margin_bottom = 290.0
 theme = ExtResource( 2 )
 text = "Serveur uniquement"
 
 [node name="LabelError" type="Label" parent="Connection/MarginContainer/VBoxContainer"]
-margin_top = 244.0
+margin_top = 310.0
 margin_right = 842.0
-margin_bottom = 292.0
+margin_bottom = 380.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="WaitingRoom" type="Panel" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -242,36 +241,36 @@ __meta__ = {
 
 [node name="Title" type="Label" parent="WaitingRoom/MarginContainer/VBoxContainer"]
 margin_right = 515.0
-margin_bottom = 48.0
+margin_bottom = 70.0
 text = "Liste d'attente"
 
 [node name="PlayersList" type="ItemList" parent="WaitingRoom/MarginContainer/VBoxContainer"]
-margin_top = 52.0
+margin_top = 90.0
 margin_right = 515.0
-margin_bottom = 308.0
+margin_bottom = 222.0
 size_flags_vertical = 3
 
 [node name="IPAddress" type="Label" parent="WaitingRoom/MarginContainer/VBoxContainer"]
-margin_top = 312.0
+margin_top = 242.0
 margin_right = 515.0
-margin_bottom = 360.0
+margin_bottom = 312.0
 text = "Adresse IP : "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="WaitingRoom/MarginContainer/VBoxContainer"]
-margin_top = 364.0
+margin_top = 332.0
 margin_right = 515.0
 margin_bottom = 422.0
 
 [node name="ButtonBack" type="Button" parent="WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 255.0
-margin_bottom = 58.0
+margin_right = 247.0
+margin_bottom = 90.0
 size_flags_horizontal = 3
 text = "Retour"
 
 [node name="ButtonStart" type="Button" parent="WaitingRoom/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 259.0
+margin_left = 267.0
 margin_right = 515.0
-margin_bottom = 58.0
+margin_bottom = 90.0
 size_flags_horizontal = 3
 text = "START"
 

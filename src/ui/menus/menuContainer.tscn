@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/themes/main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://assets/world/base/snow.png" type="Texture" id=2]
+[ext_resource path="res://src/ui/menus/home/Home.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/ui/menus/menuContainer.gd" type="Script" id=4]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+void fragment(){
+    vec2 newuv = UV;
+    newuv.x -= TIME/6.0;
+	newuv.y -= TIME/4.0;
+    vec4 c = texture(TEXTURE, newuv);
+    COLOR = c;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[node name="MenuContainer" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1152.0
+margin_bottom = -648.0
+rect_scale = Vector2( 10, 10 )
+texture = ExtResource( 2 )
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 50
+custom_constants/margin_top = 50
+custom_constants/margin_left = 50
+custom_constants/margin_bottom = 172
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Home" parent="MarginContainer" instance=ExtResource( 3 )]
+
+[node name="TransitionOldMenu" type="Tween" parent="."]
+
+[node name="TransitionNewMenu" type="Tween" parent="."]
+
+[node name="TimerTransition" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="tween_all_completed" from="TransitionOldMenu" to="." method="_on_TransitionOldMenu_tween_all_completed"]
+[connection signal="tween_all_completed" from="TransitionNewMenu" to="." method="_on_TransitionNewMenu_tween_all_completed"]
+[connection signal="timeout" from="TimerTransition" to="." method="play_second_animation"]
