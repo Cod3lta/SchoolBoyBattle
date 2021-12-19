@@ -152,7 +152,7 @@ func get_server_only():
 #################################################"""
 	
 
-func join_game(ip, new_player_name):
+func join_game(ip):
 	self.server_only = false
 	self.players.clear()
 	
@@ -160,7 +160,7 @@ func join_game(ip, new_player_name):
 	peer.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(peer)
 	
-	self.player_name = new_player_name
+	self.player_name = Database.get_player_name()
 	self.register_player(self.player_name)
 
 
@@ -191,11 +191,11 @@ func _connected_fail():
 
 
 # This instance clicked the "host" button
-func host_and_play_game(new_player_name):
+func host_and_play_game():
 	self.server_only = false
 	self.host_game()
 	
-	self.player_name = new_player_name
+	self.player_name = Database.get_player_name()
 	self.register_player(self.player_name)
 
 

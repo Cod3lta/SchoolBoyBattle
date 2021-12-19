@@ -1,6 +1,4 @@
-extends VBoxContainer
-
-signal set_menu(path, direction)
+extends Menu
 
 onready var players_list = $GridContainer/VBoxContainer/ItemList
 onready var start_button = $GridContainer/VBoxContainer2/ButtonStart

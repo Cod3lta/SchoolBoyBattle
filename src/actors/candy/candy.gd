@@ -15,6 +15,7 @@ puppet var puppet_targeted_pos = Vector2.ZERO
 
 var points: int = 0
 var sprite_frame: SpriteFrames = null
+var explosion_material: ParticlesMaterial = null
 
 
 """########################################
@@ -37,7 +38,8 @@ func _ready():
 	self.set_network_master(1)
 	set_process(false)
 
-func set_candy_sprite_frame(sprite_frame: SpriteFrames):
+func set_candy_type_properties():
+	$Explosion.set_process_material(self.explosion_material)
 	$AnimatedSprite.set_sprite_frames(self.sprite_frame)
 
 
@@ -54,6 +56,7 @@ func _process(delta):
 			rset_unreliable("puppet_targeted_pos", targeted_position)
 	else:
 		self.targeted_position  = self.puppet_targeted_pos
+	
 	self.position = lerp(self.position, self.targeted_position, 0.1)
 
 
@@ -115,4 +118,13 @@ func delete():
 	
 
 remote func delete_candy_client(candy_name):
+	$Explosion.emitting = true
+	var particle_material = $Explosion.process_material as ParticlesMaterial
+	var dir2: Vector2 = targeted_position - position
+	var dir3: Vector3 = Vector3(dir2.x, dir2.y, 0).normalized()
+	particle_material.direction = dir3
+	$AnimatedSprite.set_visible(false)
+	$TimerExplosion.start()
+
+func _on_TimerExplosion_timeout():
 	self.queue_free()

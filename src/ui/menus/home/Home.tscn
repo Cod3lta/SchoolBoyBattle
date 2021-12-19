@@ -251,13 +251,14 @@ position = Vector2( -64.0723, 54.7284 )
 scale = Vector2( 5, 5 )
 texture = ExtResource( 6 )
 hframes = 6
+frame = 2
 
 [node name="BossBlack" type="Sprite" parent="Characters"]
 position = Vector2( 89.122, 55.3981 )
 scale = Vector2( 5, 5 )
 texture = ExtResource( 7 )
 hframes = 6
-frame = 5
+frame = 1
 
 [node name="GirlBlack" type="Sprite" parent="Characters"]
 position = Vector2( 219.33, 108.127 )

@@ -1,8 +1,221 @@
-[gd_scene format=2]
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://assets/themes/main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://assets/themes/fonts/large.tres" type="DynamicFont" id=2]
+[ext_resource path="res://src/ui/menus/game-ended/gameEnded.gd" type="Script" id=3]
+[ext_resource path="res://assets/player/idle/boy-red-idle.png" type="Texture" id=4]
+[ext_resource path="res://assets/bosses/idle/boss-black-idle.png" type="Texture" id=5]
+[ext_resource path="res://assets/bosses/idle/boss-red-idle.png" type="Texture" id=6]
+[ext_resource path="res://assets/player/idle/girl-black-idle.png" type="Texture" id=7]
+[ext_resource path="res://assets/player/idle/girl-red-idle.png" type="Texture" id=8]
+[ext_resource path="res://assets/player/idle/boy-black-idle.png" type="Texture" id=9]
+
+[sub_resource type="Animation" id=1]
+resource_name = "characters_idle"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("BoyRed:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../BossBlack/GirlBlack:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.11716, 0.31716, 0.51716, 0.71716, 0.91716, 1.11716 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../BossBlack/BoyBlack:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("GirlRed:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.150783, 0.350783, 0.550783, 0.750783, 0.950783, 1.15078 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "boss_idle"
+length = 2.0
+loop = true
+step = 0.33
+tracks/0/type = "value"
+tracks/0/path = NodePath("BossRed:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.33, 0.66, 0.99, 1.32, 1.65 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../BossBlack/BossBlack:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.264695, 0.594695, 0.924695, 1.2547, 1.5847, 1.9147 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
 
 [node name="GameEnded" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelWinner" type="Label" parent="VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 221.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "XXX 
+a gagné"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 241.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_vertical = 3
+
+[node name="BossRed" type="Control" parent="VBoxContainer/HBoxContainer"]
+margin_left = 365.0
+margin_top = 239.0
+margin_right = 365.0
+margin_bottom = 239.0
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="GirlRed" type="Sprite" parent="VBoxContainer/HBoxContainer/BossRed"]
+position = Vector2( -113.799, 96.4127 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 8 )
+hframes = 6
+
+[node name="BossRed" type="Sprite" parent="VBoxContainer/HBoxContainer/BossRed"]
+position = Vector2( -219.242, -36.5466 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 6 )
+hframes = 6
+
+[node name="BoyRed" type="Sprite" parent="VBoxContainer/HBoxContainer/BossRed"]
+position = Vector2( -305.693, 116.712 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 4 )
+flip_h = true
+hframes = 6
+frame = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 385.0
+margin_right = 895.0
+margin_bottom = 479.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 510.0
+margin_bottom = 70.0
+text = "Classement de la partie"
+
+[node name="ItemList" type="ItemList" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 90.0
+margin_right = 510.0
+margin_bottom = 369.0
+size_flags_vertical = 3
+
+[node name="ButtonBack" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 389.0
+margin_right = 510.0
+margin_bottom = 479.0
+size_flags_vertical = 8
+text = "Retour"
+
+[node name="BossBlack" type="Control" parent="VBoxContainer/HBoxContainer"]
+margin_left = 915.0
+margin_top = 239.0
+margin_right = 915.0
+margin_bottom = 239.0
+size_flags_horizontal = 2
+size_flags_vertical = 4
+
+[node name="GirlBlack" type="Sprite" parent="VBoxContainer/HBoxContainer/BossBlack"]
+position = Vector2( 124.738, 96.1512 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 7 )
+flip_h = true
+hframes = 6
+frame = 4
+
+[node name="BossBlack" type="Sprite" parent="VBoxContainer/HBoxContainer/BossBlack"]
+position = Vector2( 227.57, -44.3989 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 5 )
+hframes = 6
+frame = 5
+
+[node name="BoyBlack" type="Sprite" parent="VBoxContainer/HBoxContainer/BossBlack"]
+position = Vector2( 300.722, 120.401 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 9 )
+hframes = 6
+frame = 5
+
+[node name="PlayersAnimation" type="AnimationPlayer" parent="VBoxContainer/HBoxContainer"]
+root_node = NodePath("../BossRed")
+autoplay = "characters_idle"
+anims/characters_idle = SubResource( 1 )
+
+[node name="BossesAnimation" type="AnimationPlayer" parent="VBoxContainer/HBoxContainer"]
+root_node = NodePath("../BossRed")
+autoplay = "boss_idle"
+anims/boss_idle = SubResource( 2 )
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/ButtonBack" to="." method="_on_ButtonBack_pressed"]

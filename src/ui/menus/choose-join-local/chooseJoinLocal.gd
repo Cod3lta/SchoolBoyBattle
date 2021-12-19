@@ -1,6 +1,4 @@
-extends Control
-
-signal set_menu(path)
+extends Menu
 
 onready var ip_address = $PopupIpAdress/VBoxContainer/HBoxContainer/LineEdit
 onready var error_label = $PopupIpAdress/VBoxContainer/Error
@@ -20,7 +18,7 @@ func _on_ButtonOpenPopup_pressed():
 
 
 func _on_ButtonCreateServer_pressed():
-	Gamestate.host_and_play_game("Placeholder name")
+	Gamestate.host_and_play_game()
 	emit_signal("set_menu", "res://src/ui/menus/waiting-room/WaitingRoom.tscn", Vector2.RIGHT)
 
 
@@ -30,7 +28,7 @@ func _on_ButtonJoinServer_pressed():
 		return
 
 	error_label.text = ""
-	Gamestate.join_game(ip_address.text, "Placeholder name")
+	Gamestate.join_game(ip_address.text)
 
 
 func on_connection_success():

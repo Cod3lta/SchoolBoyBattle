@@ -1,10 +1,10 @@
-extends VBoxContainer
-
-signal set_menu(path)
-
+extends Menu
 
 func _on_ButtonPlay_pressed():
-	emit_signal("set_menu", "res://src/ui/menus/choose-mode/ChooseMode.tscn", Vector2.DOWN)
+	if Database.player_name == "":
+		emit_signal("set_menu", "res://src/ui/menus/set-player-name/setPlayerName.tscn", Vector2.DOWN)
+	else:
+		emit_signal("set_menu", "res://src/ui/menus/choose-mode/ChooseMode.tscn", Vector2.DOWN)
 
 
 func _on_PlayersAnimation_animation_finished(anim_name):

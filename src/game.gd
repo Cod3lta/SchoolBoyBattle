@@ -25,6 +25,7 @@ signal update_progressbar
 
 func init(players_init: Dictionary):
 	randomize()
+	set_network_master(1)
 	
 	init_client(players_init)
 	
@@ -91,7 +92,7 @@ func init_server():
 	self.add_child(trails)
 	trails.init($YSort/Players)
 	$YSort/Map.connect("player_arrived_at_home", self, "add_points")
-	$YSort/Map.connect("player_arrived_at_home", trails, "clear_trail")
+	$YSort/Map.connect("player_arrived_at_home", trails, "animate_candies_collect")
 
 func set_main_player():
 	# Connects the joystick's signal to the player of this instance
@@ -104,7 +105,7 @@ func set_main_player():
 
 
 """########################################
-				START / END GAME
+				START GAME
 ########################################"""
 
 
@@ -115,20 +116,60 @@ func _ready():
 
 
 func play_music():
-	pass #$AudioStreamPlayer.play(0)
+	$AudioStreamPlayer.play(0)
+
+
+"""########################################
+				END GAME
+########################################"""
 
 
 func _on_GeneralTimer_timeout():
 	# Game ended
-	get_tree().get_root().add_child(load("res://src/ui/menus/game-ended/gameEnded.tscn").instance())
-	get_node("/root/Game").queue_free()
+	
+	# Save the game's results on the device
+	#Database.save_points()
+	var team_winner: int = 0
+	var points_by_player = {}
+	
+	if get_tree().is_network_server(): 
+		# define which team won
+		# 0 -> red  / 1 -> black  / -1 -> equality
+		team_winner = int(points['black'] > points['red'])
+		if points['black'] == points['red']: team_winner = -1
+		
+		# count the players points
+		for player in $YSort/Players.get_children():
+			points_by_player[player.get_name()] = {
+				"points": player.points_earned,
+				"name": player.player_name}
+		
+		# Send the message to everyone
+		for id in Gamestate.get_clients_list():
+			rpc_id(id, "game_ended", team_winner, points_by_player)
+		game_ended(team_winner, points_by_player)
+	
+	# Delete the Game node
+	self.queue_free()
+	
+
+remote func game_ended(team_winner, points_by_player):
+	var menu_container = load("res://src/ui/menus/menuContainer.tscn").instance()
+	menu_container.get_node("MarginContainer/Home").queue_free()
+	get_tree().get_root().add_child(menu_container)
+	
+	menu_container.set_menu("res://src/ui/menus/game-ended/gameEnded.tscn", Vector2.UP, [
+		team_winner, points_by_player])
+	
+	# Delete the Game node
+	self.queue_free()
 
 
 """########################################
 				SLOTS
 ########################################"""
 
-# Only called on the server
+# Add points to a team
 func add_points(player: KinematicBody2D):
 	assert(get_tree().is_network_server())
 	
@@ -139,10 +180,13 @@ func add_points(player: KinematicBody2D):
 		player.team_e.RED: self.points['red'] += points
 		player.team_e.BLACK: self.points['black'] += points
 	
-	for id in Gamestate.get_clients_list():
-		rpc_id(id, "update_progressbar_client", self.points)
+	player.points_earned += points
 	
-	emit_signal("update_progressbar", self.points)
+	var points_progress_bar = self.points.duplicate()
+	for id in Gamestate.get_clients_list():
+		rpc_id(id, "update_progressbar_client", points_progress_bar)
+	emit_signal("update_progressbar", points_progress_bar)
+
 
 remote func update_progressbar_client(points: Dictionary):
 	emit_signal("update_progressbar", points)

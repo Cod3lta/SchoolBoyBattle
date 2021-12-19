@@ -47,12 +47,13 @@ anchor_bottom = 1.0
 custom_constants/margin_right = 50
 custom_constants/margin_top = 50
 custom_constants/margin_left = 50
-custom_constants/margin_bottom = 172
+custom_constants/margin_bottom = 70
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Home" parent="MarginContainer" instance=ExtResource( 3 )]
+margin_bottom = 650.0
 
 [node name="TransitionOldMenu" type="Tween" parent="."]
 

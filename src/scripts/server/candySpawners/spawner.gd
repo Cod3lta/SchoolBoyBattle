@@ -6,8 +6,9 @@ export var spawned := false
 var candy_scene := preload("res://src/actors/candy/candy.tscn")
 
 
-remote func spawn_candy(type: String):
+remote func spawn_candy(type: String, name: String):
 	var candy = self.candy_scene.instance()
+	candy.set_name(name)
 	
 	# candy parameters
 	candy.init(self.position, type)

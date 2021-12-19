@@ -22,22 +22,27 @@ _global_script_classes=[ {
 "base": "Candy",
 "class": "MandarinLarge",
 "language": "GDScript",
-"path": "res://src/actors/candy/types/mandarinLarge.gd"
+"path": "res://src/actors/candy/types/mandarinLarge/mandarinLarge.gd"
 }, {
 "base": "Candy",
 "class": "MandarinSmall",
 "language": "GDScript",
-"path": "res://src/actors/candy/types/mandarinSmall.gd"
+"path": "res://src/actors/candy/types/mandarinSmall/mandarinSmall.gd"
+}, {
+"base": "Control",
+"class": "Menu",
+"language": "GDScript",
+"path": "res://src/ui/menus/menu.gd"
 }, {
 "base": "Candy",
 "class": "PeanutLarge",
 "language": "GDScript",
-"path": "res://src/actors/candy/types/peanutLarge.gd"
+"path": "res://src/actors/candy/types/peanutLarge/peanutLarge.gd"
 }, {
 "base": "Candy",
 "class": "PeanutSmall",
 "language": "GDScript",
-"path": "res://src/actors/candy/types/peanutSmall.gd"
+"path": "res://src/actors/candy/types/peanutSmall/peanutSmall.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Player",
@@ -54,6 +59,7 @@ _global_script_class_icons={
 "Game": "",
 "MandarinLarge": "res://assets/candy/mandarin-big.png",
 "MandarinSmall": "res://assets/candy/mandarin-small.png",
+"Menu": "",
 "PeanutLarge": "res://assets/candy/peanut-big.png",
 "PeanutSmall": "res://assets/candy/peanut-small.png",
 "Player": "",
@@ -73,6 +79,7 @@ config/icon="res://assets/brand/temp-logo.png"
 Database="*res://src/scripts/database.gd"
 Gamestate="*res://src/scripts/gamestate.gd"
 ConnectionManager="*res://src/scripts/client/connectionManager.gd"
+CandyPlacer="*res://src/scripts/server/trails/candyPlacer.gd"
 
 [display]
 

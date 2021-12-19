@@ -2,6 +2,7 @@ extends Node
 
 
 var spawners = Array()
+var candy_id := 0
 
 
 func init(spawners_list: Array):
@@ -24,12 +25,14 @@ func _on_Timer_timeout():
 	# Choose a random spawner and a candy type
 	var spawner:Position2D = available_spawners[randi() % available_spawners.size()]
 	var type: String = get_random_candy_type()
+	var name: String = "Candy" + str(candy_id)
+	candy_id += 1
 	
 	spawner.spawned = true
 	
 	for id in Gamestate.get_clients_list():
-		spawner.rpc_id(id, "spawn_candy", type)
-	spawner.spawn_candy(type)
+		spawner.rpc_id(id, "spawn_candy", type, name)
+	spawner.spawn_candy(type, name)
 
 
 func get_random_candy_type() -> String:
@@ -45,6 +48,7 @@ func get_random_candy_type() -> String:
 		if val > chances[i] and val < chances[i+1]:
 			return Database.candies.keys()[i]
 	
+	assert(false) # This line sould not be reached
 	return Database.candies.keys()[0]
 	
 	

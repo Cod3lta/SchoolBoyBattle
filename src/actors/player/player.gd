@@ -18,8 +18,9 @@ var joystick_velocity = Vector2.ZERO
 
 var trail: Array = Array()
 
-var player_name = ""
-var speed = 500
+var player_name := ""
+var points_earned := 0
+var speed := 500
 var gender = null
 var team = null
 var flip_h = false
@@ -56,6 +57,10 @@ func _ready():
 		else:
 			# Team is red, the player will also detect black candies
 			$CandiesCollider.set_collision_mask_bit(4, true)
+	
+	# Hide the nametag of the player we're playing
+	if is_network_master():
+		$NameTag.visible = false
 	
 
 
@@ -181,7 +186,7 @@ func _on_CandiesCollider_area_entered(candy: Area2D):
 		c.take(self)
 		
 		# Set the candy's color
-		for id in Gamestate.get_players_list():
+		for id in Gamestate.get_clients_list():
 			c.rpc_id(id, "set_color_team", bool(self.team))
 		c.set_color_team(bool(self.team))
 

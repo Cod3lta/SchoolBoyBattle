@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/themes/main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://src/ui/menus/set-player-name/setPlayerName.gd" type="Script" id=3]
+
+[node name="SetPlayerName" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( -2059.52, -1052.06 )
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 1280.0
+margin_bottom = 70.0
+text = "Définir un pseudonyme"
+autowrap = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+margin_top = 90.0
+margin_right = 1280.0
+margin_bottom = 180.0
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer2"]
+margin_right = 958.0
+margin_bottom = 90.0
+size_flags_horizontal = 3
+
+[node name="ButtonNext" type="Button" parent="HBoxContainer2"]
+margin_left = 978.0
+margin_right = 1280.0
+margin_bottom = 90.0
+text = "Continuer"
+
+[connection signal="pressed" from="HBoxContainer2/ButtonNext" to="." method="_on_ButtonNext_pressed"]

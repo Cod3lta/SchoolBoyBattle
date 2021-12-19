@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/scripts/server/trails/collector.gd" type="Script" id=1]
+
+[node name="Collector" type="Line2D"]
+default_color = Color( 1, 1, 1, 0 )
+script = ExtResource( 1 )
