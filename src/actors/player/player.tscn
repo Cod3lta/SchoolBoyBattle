@@ -42,7 +42,7 @@ position = Vector2( 0, -20 )
 scale = Vector2( 10, 10 )
 frames = ExtResource( 2 )
 animation = "idle"
-frame = 2
+frame = 4
 playing = true
 
 [node name="Camera" type="Camera2D" parent="."]
